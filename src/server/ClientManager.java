@@ -1,5 +1,6 @@
 package server;
 
+
 public class ClientManager {
 	//class variables
 	protected ServerControl controller;
@@ -14,5 +15,13 @@ public class ClientManager {
 		this.controller = controller;
 		this.paths = paths;
 		this.port = port;
+		
+		EasyServer server = new EasyServer(this.port, this.paths) {
+			@Override
+			public String update(String path) {
+				return "HI";
+			}
+		
+		};
 	}
 }
