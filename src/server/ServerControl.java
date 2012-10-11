@@ -12,7 +12,10 @@ public class ServerControl {
 	public ServerControl() {
 		gamemanager = new GameManager(this);
 		databasemanager = new DatabaseManager(this);
-		clientmanager = new ClientManager(this, gamemanager.getPaths(), 25565);
+		clientmanager = new ClientManager(this, gamemanager.getPaths(), 65535);
+		
+		EasyClient client = new EasyClient();
+		client.Connect("http://127.0.0.1:65535/hi");
 	}
 	
 	// Main Method

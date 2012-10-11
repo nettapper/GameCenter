@@ -15,7 +15,7 @@ public class EasyClient {
 	String Data = "";
 	
 	try {
-	    Link = new URL(Address);	
+	    Link = new URL(Address);
 	    Connection = (HttpURLConnection) Link.openConnection();
 	    Connection.setAllowUserInteraction(true);
 	    Connection.setRequestMethod("GET");
@@ -29,9 +29,10 @@ public class EasyClient {
 	    
 	    Connection.disconnect();
 	    Input.close();
-	} catch (Exception Error) {}
+	    System.out.println("Client succesfully connected to \""+Address+".\" and read \""+Data+".\"");
+	} catch (Exception Error) {Error.printStackTrace();}
 	
-	System.out.println("Client succesfully connected to \""+Address+".\" and read \""+Data+".\"");
+	
 	return Data;
     }
 }

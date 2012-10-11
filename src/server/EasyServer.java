@@ -39,13 +39,13 @@ public class EasyServer implements HttpHandler {
 	    Server.bind(new InetSocketAddress(Port), 16);
 	    
 	    for (int index = 0; index < Paths.length; index++) {
-		Server.createContext(Paths[index], this);
+	    	Server.createContext(Paths[index], this);
 	    }
 	    
 	    Server.setExecutor(null);    
 	    Server.start();
-	} catch(Exception Error) {}
+	    System.out.println("Server succesfully opened a port to \""+Port+".\"");
+	} catch(Exception Error) {Error.printStackTrace(); }
 	
-	System.out.println("Server succesfully opened a port to \""+Port+".\"");
     }
 }

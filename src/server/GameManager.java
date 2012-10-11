@@ -13,7 +13,7 @@ public class GameManager {
 	// Methods
 	
 	protected String[] getPaths() {
-		String[] s = {"hi", "ho", "di", "do"};
+		String[] s = {"/hi", "/ho", "/di", "/do"};
 		return s;
 	}
 }
