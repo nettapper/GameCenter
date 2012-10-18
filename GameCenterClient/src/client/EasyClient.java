@@ -1,4 +1,4 @@
-package server;
+package client;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;

@@ -14,9 +14,6 @@ public class ServerControl {
 		gamemanager = new GameManager(this);
 		databasemanager = new DatabaseManager(this);
 		clientmanager = new ClientManager(this, gamemanager.getPaths(), port);
-		
-		EasyClient client = new EasyClient();
-		client.Connect("http://127.0.0.1:65535/hi");
 	}
 	
 	// Main Method
