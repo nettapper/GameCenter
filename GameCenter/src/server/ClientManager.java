@@ -19,7 +19,13 @@ public class ClientManager {
 		EasyServer server = new EasyServer(this.port, this.paths) {
 			@Override
 			public String update(String path) {
-				return "Hello";
+				System.out.print("THE PATH FROM THE EASY SERVER:"+path);
+				if(path.equals("/hi"))
+					return "Your path was hi";
+				if(path.equals("/help"))
+					return "Your path was help";
+				else
+					return "I don't know what your path was";
 			}
 		
 		};
