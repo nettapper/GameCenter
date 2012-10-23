@@ -19,7 +19,7 @@ public class ClientManager {
 		EasyServer server = new EasyServer(this.port, this.paths) {
 			@Override
 			public String update(String path) {
-				return "HI";
+				return "Hello";
 			}
 		
 		};
