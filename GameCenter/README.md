@@ -1,3 +1,4 @@
-GameCenter
+GameCenter Server
 ==========
-JRE Version = 1.7
+the java server that will handle the connections between the client
+and the game
