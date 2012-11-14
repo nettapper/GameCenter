@@ -1,6 +1,5 @@
 package client;
 
-import client.EasyClient;
 import client.NewClient;
 
 public class ClientControl {
