@@ -16,7 +16,8 @@ public class ClientManager {
 		this.paths = paths;
 		this.port = port;
 		
-		EasyServer server = new EasyServer(this.port, this.paths) {
+		//EasyServer server = new EasyServer(this.port, this.paths) {
+		SimpleServer server = new SimpleServer(this.paths, this.port) {
 			@Override
 			public String update(String path) {
 				System.out.print("THE PATH FROM THE EASY SERVER:"+path);
