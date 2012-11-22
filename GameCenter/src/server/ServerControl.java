@@ -19,6 +19,18 @@ public class ServerControl {
 	// Main Method
 	
 	public static void main(String[] args){
-		new ServerControl();
+		TestGame game = new TestGame();
+		//game.Game();
+		String[] array = {"test", "fifteen", "help"};
+		GsonConverter g = new GsonConverter();
+		String tester = g.StringArrayToGson(array);
+		String[] testerArray = g.GsonToStringArray(tester);
+		System.out.println("------------");
+		for(int i = 0; i < array.length; i++)
+			System.out.println(array[i]);
+		System.out.println("---");
+		for(int i = 0; i < testerArray.length; i++)
+			System.out.println(testerArray[i]);
+		//new ServerControl();
 	}
 }
