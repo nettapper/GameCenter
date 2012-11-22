@@ -17,20 +17,25 @@ public class ClientControl {
 	
 	//Constructor
 	public static void main(String[] args) {
-		while(indexNum < path.length){
-			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
-			indexNum++;
+//		while(indexNum < path.length){
+//			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
+//			indexNum++;
+//		}
+		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", data);
+		
+		System.out.println("------");
+		String[] array = GsonToStringArray(newData);
+		for(int i = 0; i < array.length; i++){
+			System.out.println(array[i]);
 		}
 	}
 	//Gson-related methods
-	public String StringArrayToGson(String[] str){
+	public static String StringArrayToGson(String[] str){
 		String json = gson.toJson(str);
-		System.out.println(json);
 		return json;
 	}
-	public String[] GsonToStringArray(String str){
+	public static String[] GsonToStringArray(String str){
 		String[] obj = gson.fromJson(str, String[].class);
-		System.out.println(obj);
 		return obj;
 	}
 	//HTTP-related methods

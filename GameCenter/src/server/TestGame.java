@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class TestGame {
 	Scanner kb = new Scanner(System.in);
 	int randomNum = (int) Math.round(Math.random()*10);
+	String[] gamePaths = {"/playerInput","/requestIfCorrect"};
 	public void Game(){
 		System.out.println("The super secret number is:"+randomNum);
 		while(true){

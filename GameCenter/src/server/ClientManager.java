@@ -22,12 +22,10 @@ public class ClientManager implements HttpHandler{
 	//Gson-related methods
 	public String StringArrayToGson(String[] str){
 		String json = gson.toJson(str);
-		System.out.println(json);
 		return json;
 	}
 	public String[] GsonToStringArray(String str){
 		String[] obj = gson.fromJson(str, String[].class);
-		System.out.println(obj);
 		return obj;
 	}
 	//HTTP-related methods
@@ -56,11 +54,12 @@ public class ClientManager implements HttpHandler{
 		
 	}
 	public String update(String path) {
-		System.out.print("THE PATH FROM THE EASY SERVER:"+path);
 		if(path.equals("/hi"))
 			return "Your path was hi";
-		if(path.equals("/help"))
-			return "Your path was help";
+		if(path.equals("/help")){
+			String returnString = StringArrayToGson(controller.game.gamePaths);
+			return returnString;
+		}
 		else
 			return "I don't know what your path was";
 	    }
@@ -68,7 +67,7 @@ public class ClientManager implements HttpHandler{
 	public void handle(HttpExchange exchange){
 		InputStream inputStream = exchange.getRequestBody();
 		try {
-			System.out.print("readData:");
+			System.out.print("DataFromClient:");
 			while(data!=-1){
 				data = inputStream.read();
 				System.out.print((char)data);
@@ -80,8 +79,8 @@ public class ClientManager implements HttpHandler{
 		}
 		
 		String getPath = exchange.getHttpContext().getPath();
-		this.response = getPath;
-		//System.out.println(response);
+		this.response = update(getPath);
+		System.out.println("DataToClient:"+this.response);
 		try {
 			exchange.sendResponseHeaders(200, response.length());
 			OutputStream outputStream = exchange.getResponseBody();

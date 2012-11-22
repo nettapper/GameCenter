@@ -7,6 +7,7 @@ public class ServerControl {
 	protected DatabaseManager databasemanager;
 	protected ClientManager clientmanager;
 	protected GameManager gamemanager;
+	protected TestGame game;
 	
 	//constructors	protected Player[] players;
 	
@@ -14,23 +15,12 @@ public class ServerControl {
 		gamemanager = new GameManager(this);
 		databasemanager = new DatabaseManager(this);
 		clientmanager = new ClientManager(this, gamemanager.getPaths(), port);
+		game = new TestGame();
 	}
 	
 	// Main Method
 	
 	public static void main(String[] args){
-		TestGame game = new TestGame();
-		//game.Game();
-		String[] array = {"test", "fifteen", "help"};
-		GsonConverter g = new GsonConverter();
-		String tester = g.StringArrayToGson(array);
-		String[] testerArray = g.GsonToStringArray(tester);
-		System.out.println("------------");
-		for(int i = 0; i < array.length; i++)
-			System.out.println(array[i]);
-		System.out.println("---");
-		for(int i = 0; i < testerArray.length; i++)
-			System.out.println(testerArray[i]);
-		//new ServerControl();
+		new ServerControl();
 	}
 }
