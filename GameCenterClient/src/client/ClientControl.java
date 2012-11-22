@@ -6,20 +6,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ClientControl {
+	//Class variables
 	protected static final String ipaddress = "127.0.0.1";
 	protected static final String port = "65535";
 	protected static final String[] path = {"hi","help"};
 	protected static int indexNum = 0;
 	protected static String data = "lol lol lol im better than you!";
 	
+	//Constructor
 	public static void main(String[] args) {
 		while(indexNum < path.length){
 			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
 			indexNum++;
 		}
 	}
-	//New Client Below
-
+	//HTTP-related methods
 	public static String connect(String address, String outputData) {
 		System.out.println("Client attempting a connection to \""+address+".\"");
 		
