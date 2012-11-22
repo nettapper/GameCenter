@@ -14,7 +14,6 @@ public class ClientControl {
 	protected static int indexNum = 0;
 	protected static String data = "lol lol lol im better than you!";
 	protected static Gson gson = new Gson();
-
 	
 	//Constructor
 	public static void main(String[] args) {
