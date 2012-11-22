@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.google.gson.Gson;
 
 public class ClientControl {
 	//Class variables
@@ -12,6 +13,8 @@ public class ClientControl {
 	protected static final String[] path = {"hi","help"};
 	protected static int indexNum = 0;
 	protected static String data = "lol lol lol im better than you!";
+	protected static Gson gson = new Gson();
+
 	
 	//Constructor
 	public static void main(String[] args) {
@@ -19,6 +22,17 @@ public class ClientControl {
 			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
 			indexNum++;
 		}
+	}
+	//Gson-related methods
+	public String StringArrayToGson(String[] str){
+		String json = gson.toJson(str);
+		System.out.println(json);
+		return json;
+	}
+	public String[] GsonToStringArray(String str){
+		String[] obj = gson.fromJson(str, String[].class);
+		System.out.println(obj);
+		return obj;
 	}
 	//HTTP-related methods
 	public static String connect(String address, String outputData) {

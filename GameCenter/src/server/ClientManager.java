@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -12,13 +13,23 @@ import com.sun.net.httpserver.HttpServer;
 public class ClientManager implements HttpHandler{
 	//Class variables
 	protected ServerControl controller;
-
 	protected String[] paths;
 	protected int port;
-
 	protected String response = "No Path Yet!";
 	protected int data = 0;
+	protected Gson gson = new Gson();
 	
+	//Gson-related methods
+	public String StringArrayToGson(String[] str){
+		String json = gson.toJson(str);
+		System.out.println(json);
+		return json;
+	}
+	public String[] GsonToStringArray(String str){
+		String[] obj = gson.fromJson(str, String[].class);
+		System.out.println(obj);
+		return obj;
+	}
 	//HTTP-related methods
 	public void SimpleServer(){
 		String[] paths = {"/hi","/help"};
