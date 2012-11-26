@@ -60,9 +60,10 @@ public class ClientManager implements HttpHandler{
 			String returnString = StringArrayToGson(controller.game.gamePaths);
 			return returnString;
 		}
-		else
+		else {
 			return "I don't know what your path was";
-	    }
+		}
+	}
 	@Override
 	public void handle(HttpExchange exchange){
 		InputStream inputStream = exchange.getRequestBody();
