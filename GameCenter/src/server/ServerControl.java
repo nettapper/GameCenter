@@ -1,5 +1,7 @@
 package server;
 
+import game.TestGame;
+
 public class ServerControl {
 	// Class variables
 	protected static final int port = 65535;

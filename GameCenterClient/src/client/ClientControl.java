@@ -64,8 +64,8 @@ public class ClientControl {
 		    
 		    input = connection.getInputStream();
 		    while (input.available() > 0) {
-			int number = input.read();
-			data += Character.toString((char) number);
+		    	int number = input.read();
+		    	data += (char) number;
 		    }
 		    connection.disconnect();
 		    input.close();

@@ -60,19 +60,21 @@ public class ClientManager implements HttpHandler{
 			String returnString = StringArrayToGson(controller.game.gamePaths);
 			return returnString;
 		}
-		else {
-			return "I don't know what your path was";
-		}
+		return "I don't know what your path was";
 	}
 	@Override
 	public void handle(HttpExchange exchange){
 		InputStream inputStream = exchange.getRequestBody();
 		try {
 			System.out.print("DataFromClient:");
+			String dataFromClient = "";
 			while(data!=-1){
 				data = inputStream.read();
-				System.out.print((char)data);
+				//System.out.print((char)data);
+				dataFromClient += (char) data;
 			}
+			System.out.println(dataFromClient);
+			//System.out.println(GsonToStringArray(dataFromClient));
 			data = 0;
 			System.out.println("--Data has been read--");
 		} catch (IOException e1) {
