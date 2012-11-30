@@ -21,7 +21,8 @@ public class ClientControl {
 //			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
 //			indexNum++;
 //		}
-		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", data);
+		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", StringArrayToGson(path));
+		System.out.println(StringArrayToGson(path));
 		
 		System.out.println("------");
 		String[] array = GsonToStringArray(newData);

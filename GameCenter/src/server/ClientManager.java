@@ -20,11 +20,11 @@ public class ClientManager implements HttpHandler{
 	protected Gson gson = new Gson();
 	
 	//Gson-related methods
-	public String StringArrayToGson(String[] str){
+	public String stringArrayToGson(String[] str){
 		String json = gson.toJson(str);
 		return json;
 	}
-	public String[] GsonToStringArray(String str){
+	public String[] gsonToStringArray(String str){
 		String[] obj = gson.fromJson(str, String[].class);
 		return obj;
 	}
@@ -57,7 +57,7 @@ public class ClientManager implements HttpHandler{
 		if(path.equals("/hi"))
 			return "Your path was hi";
 		if(path.equals("/help")){
-			String returnString = StringArrayToGson(controller.game.gamePaths);
+			String returnString = stringArrayToGson(controller.game.gamePaths);
 			return returnString;
 		}
 		return "I don't know what your path was";
@@ -70,11 +70,13 @@ public class ClientManager implements HttpHandler{
 			String dataFromClient = "";
 			while(data!=-1){
 				data = inputStream.read();
+				if(data == -1) break;
 				//System.out.print((char)data);
 				dataFromClient += (char) data;
 			}
-			System.out.println(dataFromClient);
-			//System.out.println(GsonToStringArray(dataFromClient));
+			//System.out.println(dataFromClient);
+			String[] recievedFromClient = gsonToStringArray(dataFromClient);
+			System.out.println(recievedFromClient);
 			data = 0;
 			System.out.println("--Data has been read--");
 		} catch (IOException e1) {
