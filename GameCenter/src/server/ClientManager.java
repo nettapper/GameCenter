@@ -16,6 +16,7 @@ public class ClientManager implements HttpHandler{
 	protected String[] paths;
 	protected int port;
 	protected String response = "No Path Yet!";
+	String[] recievedFromClient;
 	protected int data = 0;
 	protected Gson gson = new Gson();
 	
@@ -54,6 +55,9 @@ public class ClientManager implements HttpHandler{
 		
 	}
 	public String update(String path) {
+		if(recievedFromClient==null){
+			return "Error, cannot accept non String[] JSON objects";
+		}
 		if(path.equals("/hi"))
 			return "Your path was hi";
 		if(path.equals("/help")){
@@ -66,7 +70,6 @@ public class ClientManager implements HttpHandler{
 	public void handle(HttpExchange exchange){
 		InputStream inputStream = exchange.getRequestBody();
 		try {
-			System.out.print("DataFromClient:");
 			String dataFromClient = "";
 			while(data!=-1){
 				data = inputStream.read();
@@ -75,10 +78,11 @@ public class ClientManager implements HttpHandler{
 				dataFromClient += (char) data;
 			}
 			//System.out.println(dataFromClient);
-			String[] recievedFromClient = gsonToStringArray(dataFromClient);
+			recievedFromClient = gsonToStringArray(dataFromClient);
+			System.out.print("DataFromClient:");
 			System.out.println(recievedFromClient);
 			data = 0;
-			System.out.println("--Data has been read--");
+			//System.out.println("--Data has been read--");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

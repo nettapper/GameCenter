@@ -21,13 +21,20 @@ public class ClientControl {
 //			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
 //			indexNum++;
 //		}
-		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", StringArrayToGson(path));
+		//String newData = connect("http://"+ipaddress+":"+port+"/"+"help", StringArrayToGson(path));
+		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", data);
+
 		System.out.println(StringArrayToGson(path));
 		
 		System.out.println("------");
-		String[] array = GsonToStringArray(newData);
-		for(int i = 0; i < array.length; i++){
-			System.out.println(array[i]);
+		try {
+			String[] array = GsonToStringArray(newData);
+			for(int i = 0; i < array.length; i++){
+				System.out.println(array[i]);
+			}
+		} catch (Exception e) {
+			System.out.println("Error when reading Json object?");
+			//e.printStackTrace();
 		}
 	}
 	//Gson-related methods
