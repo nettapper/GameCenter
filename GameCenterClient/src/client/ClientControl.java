@@ -7,14 +7,8 @@ import java.net.URL;
 import com.google.gson.Gson;
 
 public class ClientControl {
-	//Class variables
-	protected static final String ipaddress = "127.0.0.1";
-	protected static final String port = "65535";
-	protected static final String[] path = {"hi","help"};
-	protected static int indexNum = 0;
-	protected static String data = "lol lol lol im better than you!";
-	protected static Gson gson = new Gson();
 	
+<<<<<<< HEAD
 	//Constructor
 	public static void main(String[] args) {
 //		while(indexNum < path.length){
@@ -47,8 +41,24 @@ public class ClientControl {
 		return obj;
 	}
 	//HTTP-related methods
+=======
+	public static final String IP_ADDRESS = "localhost";
+	public static final String PORT = "65534";
+	
+	// TESTING //
+	
+	public static String[] paths = {"/hi", "/help"};
+	public static int index = 0;
+	public static String testData = "lolol lolol";
+	
+	// END //
+	
+	public ClientControl() {}
+	
+>>>>>>> Cleaned up and refactored code
 	public static String connect(String address, String outputData) {
-		System.out.println("Client attempting a connection to \""+address+".\"");
+		
+		System.out.println("Client attempting a connection to \""+address+".\""); // Debuging
 		
 		HttpURLConnection connection;
 		URL link;
@@ -75,10 +85,30 @@ public class ClientControl {
 		    	int number = input.read();
 		    	data += (char) number;
 		    }
+		    
 		    connection.disconnect();
 		    input.close();
-		    System.out.println("Client succesfully connected to \""+address+".\" and read \""+data+".\"");
-		} catch (Exception Error) {Error.printStackTrace();}
+		    
+		    System.out.println("Client succesfully connected to \""+address+".\" and read \""+data+".\""); // Debuging
+		    
+		} catch (Exception e) { e.printStackTrace(); }
+		
 		return data;
-	    }
+	}
+	
+	public static void main(String[] args) {
+		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+"/"+"help", GsonConverter.stringArrayToGson(paths));
+		
+		// DEBUGING //
+		
+		System.out.println(GsonConverter.stringArrayToGson(paths));
+		
+		System.out.println("--------------------------------------");
+		String[] array = GsonConverter.gsonToStringArray(retrievedData);
+		for(int i = 0; i < array.length; i++){
+			System.out.println(array[i]);
+		}
+		
+		// END //
+	}
 }

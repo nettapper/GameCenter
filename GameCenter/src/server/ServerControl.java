@@ -1,23 +1,21 @@
 package server;
 
-import game.TestGame;
-
 public class ServerControl {
 	// Class variables
-	protected static final int port = 65535;
+	protected static final int port = 65534;
 	
 	protected DatabaseManager databasemanager;
 	protected ClientManager clientmanager;
 	protected GameManager gamemanager;
-	protected TestGame game;
 	
 	//constructors	protected Player[] players;
 	
 	public ServerControl() {
 		gamemanager = new GameManager(this);
 		databasemanager = new DatabaseManager(this);
-		clientmanager = new ClientManager(this, gamemanager.getPaths(), port);
-		game = new TestGame();
+		clientmanager = new ClientManager(this, gamemanager.getPaths());
+		
+		gamemanager.startGame();
 	}
 	
 	// Main Method
