@@ -14,7 +14,7 @@ public class ClientControl {
 	
 	// TESTING //
 	
-	public static String[] paths = {"/hi", "/help"};
+	public static String[] paths = {"/ping", "/help"};
 	public static int index = 0;
 	public static String testData = "lolol lolol";
 	
@@ -63,7 +63,7 @@ public class ClientControl {
 	}
 	
 	public static void main(String[] args) {
-		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+"/"+"help", GsonConverter.stringArrayToGson(paths));
+		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+paths[1], GsonConverter.stringArrayToGson(paths));
 		
 		// DEBUGING //
 		
