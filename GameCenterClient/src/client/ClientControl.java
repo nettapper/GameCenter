@@ -4,44 +4,11 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import com.google.gson.Gson;
 
 public class ClientControl {
-	
-<<<<<<< HEAD
-	//Constructor
-	public static void main(String[] args) {
-//		while(indexNum < path.length){
-//			connect("http://"+ipaddress+":"+port+"/"+path[indexNum], data);
-//			indexNum++;
-//		}
-		//String newData = connect("http://"+ipaddress+":"+port+"/"+"help", StringArrayToGson(path));
-		String newData = connect("http://"+ipaddress+":"+port+"/"+"help", data);
-
-		System.out.println(StringArrayToGson(path));
 		
-		System.out.println("------");
-		try {
-			String[] array = GsonToStringArray(newData);
-			for(int i = 0; i < array.length; i++){
-				System.out.println(array[i]);
-			}
-		} catch (Exception e) {
-			System.out.println("Error when reading Json object?");
-			//e.printStackTrace();
-		}
-	}
-	//Gson-related methods
-	public static String StringArrayToGson(String[] str){
-		String json = gson.toJson(str);
-		return json;
-	}
-	public static String[] GsonToStringArray(String str){
-		String[] obj = gson.fromJson(str, String[].class);
-		return obj;
-	}
-	//HTTP-related methods
-=======
 	public static final String IP_ADDRESS = "localhost";
 	public static final String PORT = "65534";
 	
@@ -55,7 +22,6 @@ public class ClientControl {
 	
 	public ClientControl() {}
 	
->>>>>>> Cleaned up and refactored code
 	public static String connect(String address, String outputData) {
 		
 		System.out.println("Client attempting a connection to \""+address+".\""); // Debuging
