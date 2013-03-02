@@ -7,7 +7,6 @@ import java.net.InetSocketAddress;
 
 import client.GsonConverter;
 
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -17,8 +16,6 @@ public class ClientManager implements HttpHandler {
 	
 	protected ServerControl controller;
 	protected String[] paths;
-	
-	protected Gson gson;
 	
 	//TESTING//
 	
@@ -49,19 +46,28 @@ public class ClientManager implements HttpHandler {
 	}
 	
 	public String update(String path) {
+		System.out.println("path from client: " + path); //Debugging
 		if(path.equals("/ping")) {
-			return "pong " + System.currentTimeMillis();
-		} else if(path.equals("/help")) {
-			return GsonConverter.stringArrayToGson(paths);
+			String [] strArray = new String[1];
+			strArray[0] = "Server has succesfully read path \" ping \" : " + System.currentTimeMillis();
+			return GsonConverter.stringArrayToGson(strArray);
+		} else if(path.equals("/helps")) {
+			String [] strArray = new String[1];
+			strArray[0] = "Server has succesfully read path \" help \" : " + System.currentTimeMillis();
+			return GsonConverter.stringArrayToGson(strArray);
 		}
 		
 		for(int i = 0; i < paths.length; i++) {
 			if(path.equals(paths[i])) {
-				return paths[i];
+				String [] strArray = new String[1];
+				strArray[0] = paths[i];
+				return GsonConverter.stringArrayToGson(strArray);
 			}
 		}
 		
-		return "Not a proper path: " + path;
+		String [] strArray = new String[1];
+		strArray[0] = path + " is not a proper path.";
+		return GsonConverter.stringArrayToGson(strArray);
 	}
 	
 	@Override
@@ -84,16 +90,17 @@ public class ClientManager implements HttpHandler {
 			
 			String[] recievedFromClient = GsonConverter.gsonToStringArray(dataFromClient);
 			
-			System.out.println(recievedFromClient);// Debuging
+			System.out.println(recievedFromClient);// Debugging
 			
 			data = 0;
 			
-			System.out.println("--Data has been read--"); // Debuging
+			System.out.println("--Data has been read--"); // Debugging
 			
 			String getPath = exchange.getHttpContext().getPath();
+			System.out.println("getPath: "+ getPath); // Debugging
 			this.response = update(getPath);
 			
-			System.out.println("DataToClient:"+this.response); // Debuging
+			System.out.println("DataToClient:"+this.response); // Debugging
 			
 			exchange.sendResponseHeaders(200, response.length());
 			

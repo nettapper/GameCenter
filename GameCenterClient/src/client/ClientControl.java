@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.google.gson.Gson;
-
 public class ClientControl {
 		
 	public static final String IP_ADDRESS = "localhost";
@@ -40,20 +38,25 @@ public class ClientControl {
 		    connection.setDoOutput(true);
 		    connection.setDoInput(true);
 		    connection.setInstanceFollowRedirects(false);
-		    
+
 		    output = new DataOutputStream(connection.getOutputStream());
 		    output.writeBytes(outputData);
 		    output.flush();
 		    output.close();
-		    
-		    input = connection.getInputStream();
-		    while (input.available() > 0) {
-		    	int number = input.read();
-		    	data += (char) number;
-		    }
+
+		    try {  //Try to read the data from server
+				input = connection.getInputStream();
+				while (input.available() > 0) {
+					int number = input.read();
+					data += (char) number;
+				}
+			    input.close();
+			} catch (Exception e) {
+				System.out.println("No \'input\' data");
+				data = "";
+			}
 		    
 		    connection.disconnect();
-		    input.close();
 		    
 		    System.out.println("Client succesfully connected to \""+address+".\" and read \""+data+".\""); // Debuging
 		    
@@ -63,16 +66,22 @@ public class ClientControl {
 	}
 	
 	public static void main(String[] args) {
-		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+"/"+"help", GsonConverter.stringArrayToGson(paths));
+		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+"/"+"helps", GsonConverter.stringArrayToGson(paths));
 		
 		// DEBUGING //
 		
-		System.out.println(GsonConverter.stringArrayToGson(paths));
+		//System.out.println(GsonConverter.stringArrayToGson(paths));
 		
 		System.out.println("--------------------------------------");
-		String[] array = GsonConverter.gsonToStringArray(retrievedData);
-		for(int i = 0; i < array.length; i++){
-			System.out.println(array[i]);
+		if (retrievedData != "") {
+			System.out.println(retrievedData);
+			String[] array = GsonConverter.gsonToStringArray(retrievedData);
+			System.out.println("arrLen: " + array.length);
+			for (int i = 0; i < array.length; i++) {
+				System.out.println(array[i]);
+			}
+		} else {
+			System.out.println("Nothing from Server");
 		}
 		
 		// END //
