@@ -1,6 +1,5 @@
 package server;
 
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -9,7 +8,6 @@ public class ClientManagerTemplate implements HttpHandler {
 	protected ServerControl controller;
 	protected String[] paths;
 	
-	protected Gson gson;
 	
 	//TESTING//
 	
