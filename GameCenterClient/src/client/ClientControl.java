@@ -36,8 +36,8 @@ public class ClientControl {
 		}
 		System.out.println("---------------------------------------");
 		
-		String ping = connect("/ping", GsonConverter.objectArrayToGson(new Object[] {new Long(System.currentTimeMillis())}));
-		System.out.println("ping (ms): " + ping);
+		String ping = connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
+		System.out.println(ping);
 		
 		// END //
 	}
