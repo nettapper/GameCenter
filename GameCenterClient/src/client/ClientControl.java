@@ -8,21 +8,47 @@ import java.net.URL;
 public class ClientControl {
 		
 	public static final String IP_ADDRESS = "localhost";
-	public static final String PORT = "65534";
+	public static final int PORT = 65533;
+	public static final String ADDRESS = "http://" + IP_ADDRESS + ":" + PORT;
+	
+	protected String[] paths;
 	
 	// TESTING //
 	
-	public static String[] paths = {"/hi", "/help"};
 	public static int index = 0;
 	public static String testData = "lolol lolol";
 	
 	// END //
 	
-	public ClientControl() {}
-	
-	public static String connect(String address, String outputData) {
+	public ClientControl() {
+		String retrievedPaths = connect("/help", GsonConverter.stringArrayToGson(new String[] {"Nothing here."}));
 		
-		System.out.println("Client attempting a connection to \""+address+".\""); // Debuging
+		// DEBUGGING //
+		
+		System.out.print("READ ---->   ");
+		
+		if (retrievedPaths != "") {
+			this.paths = GsonConverter.gsonToStringArray(retrievedPaths);
+			
+			System.out.println(retrievedPaths);
+		} else {
+			System.out.println("Nothing from Server");
+		}
+		System.out.println("---------------------------------------");
+		
+		String ping = connect("/ping", GsonConverter.objectArrayToGson(new Object[] {new Long(System.currentTimeMillis())}));
+		System.out.println("ping (ms): " + ping);
+		
+		// END //
+	}
+	
+	public static String connect(String path, Object[] outputData) {
+		return connect(path, GsonConverter.objectArrayToGson(outputData));
+	}
+	
+	public static String connect(String path, String outputData) {
+		
+		System.out.println("Client attempting a connection to : " + ADDRESS + path); // Debugging
 		
 		HttpURLConnection connection;
 		URL link;
@@ -31,7 +57,7 @@ public class ClientControl {
 		DataOutputStream output;
 		
 		try {
-		    link = new URL(address);
+		    link = new URL(ADDRESS + path);
 		    connection = (HttpURLConnection) link.openConnection();
 		    connection.setAllowUserInteraction(true);
 		    connection.setRequestMethod("POST");
@@ -58,7 +84,7 @@ public class ClientControl {
 		    
 		    connection.disconnect();
 		    
-		    System.out.println("Client succesfully connected to \""+address+".\" and read \""+data+".\""); // Debuging
+		    System.out.println("Client succesfully connected to   : " + ADDRESS + path); // Debugging
 		    
 		} catch (Exception e) { e.printStackTrace(); }
 		
@@ -66,24 +92,6 @@ public class ClientControl {
 	}
 	
 	public static void main(String[] args) {
-		String retrievedData = connect("http://"+IP_ADDRESS+":"+PORT+"/"+"helps", GsonConverter.stringArrayToGson(paths));
-		
-		// DEBUGING //
-		
-		//System.out.println(GsonConverter.stringArrayToGson(paths));
-		
-		System.out.println("--------------------------------------");
-		if (retrievedData != "") {
-			System.out.println(retrievedData);
-			String[] array = GsonConverter.gsonToStringArray(retrievedData);
-			System.out.println("arrLen: " + array.length);
-			for (int i = 0; i < array.length; i++) {
-				System.out.println(array[i]);
-			}
-		} else {
-			System.out.println("Nothing from Server");
-		}
-		
-		// END //
+		new ClientControl();
 	}
 }

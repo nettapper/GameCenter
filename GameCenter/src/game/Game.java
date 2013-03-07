@@ -14,9 +14,9 @@ public class Game extends Plugin {
 	public Game() {
 		super();
 		
-		Function guess = new Function("guess") {
+		Function guess = new Function("guess", this) {
 			@Override
-			public String run(Object[] args) {
+			public Object[] run(Object[] args) {
 				if(args[0] instanceof Integer) {
 					
 				} else if(args[0] instanceof String) {
@@ -27,7 +27,6 @@ public class Game extends Plugin {
 				return null;
 			}
 		};
-		addFunction(guess);
 	}
 	
 	public void startGame() {
@@ -35,8 +34,6 @@ public class Game extends Plugin {
 		winner = "";
 		
 		generateRandNum();
-		
-		System.out.println("winner:" + winner);
 	}
 	
 	private void generateRandNum() {
