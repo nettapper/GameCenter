@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class ClientControl {
 		
@@ -92,6 +93,57 @@ public class ClientControl {
 	}
 	
 	public static void main(String[] args) {
-		new ClientControl();
+		//new ClientControl();
+		
+		// for Number guessing game //
+		System.out.println("gussing game starting");
+		Scanner sc = new Scanner(System.in);
+		String userIn = "";
+		while(!(userIn.equalsIgnoreCase("exit"))){
+			System.out.println("1-send, 2-read, 3-\'/help\'");
+			userIn = sc.nextLine();
+			if(userIn.length() > 1)
+				continue;
+			if(userIn.equalsIgnoreCase(""))
+				continue;
+			try {
+				switch(Integer.parseInt(userIn)){
+				case 1:
+					System.out.println("--Sending--");
+					System.out.print("path:");
+					String userPath = sc.nextLine();
+					String userGuess = "no data to send";
+					String userGuessType = "String";
+					if(userPath.equalsIgnoreCase("/guess")){
+						System.out.print("guess (int):");
+						userGuess = sc.nextLine();
+						userGuessType = "int";
+					}
+					Object[] userInput = new Object[1];
+					if(userGuessType.equalsIgnoreCase("int")){
+						userInput[0] = Integer.parseInt(userGuess);
+					}
+					String serverReturn = connect(userPath, userInput);
+					System.out.println("serverReturn" + serverReturn);
+					break;
+				case 2:
+					System.out.println("--Reading--");
+					break;
+				case 3:
+					System.out.println("--\'/help\'--");
+					String retrievedPaths = connect("/help", GsonConverter.stringArrayToGson(new String[] {"Nothing here."}));
+					System.out.println(retrievedPaths);
+					break;
+				default:
+					System.out.println("Not a valid choice");
+					break;
+				}
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("something went wrong");
+				continue;
+			}
+		}
+		// end Number guessing game //
 	}
 }
