@@ -5,102 +5,88 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
-import client.GsonConverter;
-
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-
 public class ClientManager implements HttpHandler {
-	
+
 	protected ServerControl controller;
 	protected String[] paths;
-	
-	protected Gson gson;
-	
-	//TESTING//
-	
-	String response = "nope";
-	int data = 0;
-	
-	// END //
-	
-	public ClientManager(ServerControl controller, String[] paths) {
-		System.out.println("Server attempting to open port: \""+controller.port+"\"");  // Debuging
+
+	protected ClientManager(ServerControl controller, String[] paths) {
 		
+		this.controller = controller;
 		this.paths = paths;
+
+		// Try to initiate server here!
+		System.out.println("Server attempting to open port: " + controller.port); // Debugging
 		
-		//Try to initiate server here!
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(controller.port), 0);
-			
+
 			for (int i = 0; i < paths.length; i++) {
 				server.createContext(paths[i], this);
-		    }
-			
-			server.setExecutor(null);    
+			}
+
+			server.setExecutor(null);
 			server.start();
-			
-			System.out.println("Server succesfully opened port: \""+controller.port+"\"");  // Debuging
-			
-		} catch (IOException e) { e.printStackTrace(); }
-	}
-	
-	public String update(String path) {
-		if(path.equals("/ping")) {
-			return "pong " + System.currentTimeMillis();
-		} else if(path.equals("/help")) {
-			return GsonConverter.stringArrayToGson(paths);
+
+			System.out.println("Server succesfully opened port: " + controller.port); // Debugging
+			System.out.println("---------------------------------------"); // Debugging
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		for(int i = 0; i < paths.length; i++) {
-			if(path.equals(paths[i])) {
-				return paths[i];
+	}
+
+	public String update(String path, String args) {
+		if (path.equals("/ping")) {
+			return controller.gamemanager.pingMe(args);
+		} else if (path.equals("/help")) {
+			return controller.gamemanager.getGsonPaths();
+		}
+
+		for (int i = 0; i < paths.length; i++) {
+			if (path.equals(paths[i])) {
+				return controller.gamemanager.callFunction(path, args);
 			}
 		}
-		
-		return "Not a proper path: " + path;
+
+		return path + " is not proper.";
 	}
-	
+
 	@Override
 	public void handle(HttpExchange exchange) {
 		InputStream inputStream = exchange.getRequestBody();
-		
+
 		try {
-			System.out.print("DataFromClient: "); // Debuging
-			
-			String dataFromClient = "";
-			while(data != -1){
-				data = inputStream.read();
-				
-				if(data == -1) {
-					break;
-				} else {
-					dataFromClient += (char) data;
-				}
+			int curData = inputStream.read();
+			String args = "";
+			while (curData != -1) {
+				args += (char) curData;
+				curData = inputStream.read();
 			}
+
+			String path = exchange.getHttpContext().getPath();
+			String response = update(path, args);
 			
-			String[] recievedFromClient = GsonConverter.gsonToStringArray(dataFromClient);
+			// DEGUGGING //
 			
-			System.out.println(recievedFromClient);// Debuging
+			System.out.println("Path From Client: " + path);
+			System.out.println("Data From Client: " + args);
+			System.out.println("Data To Client: " + response);
+			System.out.println("---------------------------------------");
 			
-			data = 0;
-			
-			System.out.println("--Data has been read--"); // Debuging
-			
-			String getPath = exchange.getHttpContext().getPath();
-			this.response = update(getPath);
-			
-			System.out.println("DataToClient:"+this.response); // Debuging
-			
+			// END //
+
 			exchange.sendResponseHeaders(200, response.length());
-			
+
 			OutputStream outputStream = exchange.getResponseBody();
 			outputStream.write(response.getBytes());
 			outputStream.close();
-			
-		} catch (IOException e) { e.printStackTrace(); }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

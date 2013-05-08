@@ -18,12 +18,13 @@ public abstract class Plugin {
 		return null;
 	}
 	
-	public void runFunction(String name, Object[] args) {
+	public Object runFunction(String name, Object args) {
 		for(Function f : functions) {
 			if(f.name.equals(name)) {
-				f.run(args);
+				return f.run(args);
 			}
 		}
+		return null;
 	}
 	
 	public void addFunction(Function newFunc) {

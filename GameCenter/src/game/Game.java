@@ -14,20 +14,18 @@ public class Game extends Plugin {
 	public Game() {
 		super();
 		
-		Function guess = new Function("guess") {
+		Function guess = new Function("guess", this) {
 			@Override
-			public String run(Object[] args) {
-				if(args[0] instanceof Integer) {
-					
-				} else if(args[0] instanceof String) {
-					try {
-						args[0] = new Integer(Integer.parseInt((String) args[0]));
-					} catch(Exception ex) { ex.printStackTrace(); }
-				}
-				return null;
+			public Object run(Object args) {
+				int g = 0;
+				try {
+					g = ((Double) ((Object[]) args)[0]).intValue();
+				} catch(Exception e) {e.printStackTrace(); }
+				
+				return new Boolean(g == randomNumber);
 			}
 		};
-		addFunction(guess);
+		guess.desc = "Call this to guess a number. Arguments: [int guess]";
 	}
 	
 	public void startGame() {
@@ -35,8 +33,6 @@ public class Game extends Plugin {
 		winner = "";
 		
 		generateRandNum();
-		
-		System.out.println("winner:" + winner);
 	}
 	
 	private void generateRandNum() {

@@ -10,12 +10,16 @@ public class ServerControl {
 	
 	//constructors	protected Player[] players;
 	
-	public ServerControl() {
+	protected ServerControl() {
 		gamemanager = new GameManager(this);
 		databasemanager = new DatabaseManager(this);
 		clientmanager = new ClientManager(this, gamemanager.getPaths());
 		
 		gamemanager.startGame();
+	}
+	
+	protected synchronized int generateClientID() {
+		return 0;
 	}
 	
 	// Main Method

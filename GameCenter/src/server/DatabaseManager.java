@@ -8,7 +8,7 @@ public class DatabaseManager {
 	
 	// Constructors
 	
-	public DatabaseManager(ServerControl controller) {
+	protected DatabaseManager(ServerControl controller) {
 		this.controller = controller;
 	}
 }
