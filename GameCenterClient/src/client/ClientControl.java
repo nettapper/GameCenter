@@ -97,6 +97,7 @@ public class ClientControl {
 		
 		// for Number guessing game //
 		System.out.println("gussing game starting");
+		System.out.println("type \'exit\' to exit");
 		Scanner sc = new Scanner(System.in);
 		String userIn = "";
 		while(!(userIn.equalsIgnoreCase("exit"))){
