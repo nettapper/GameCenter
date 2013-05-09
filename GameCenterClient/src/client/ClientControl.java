@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class ClientControl {
 		
@@ -24,7 +25,16 @@ public class ClientControl {
 		String retrievedPaths = connect("/help", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
 
 		if (retrievedPaths != "") {
-			this.paths = GsonConverter.gsonToStringArray(retrievedPaths);
+			try {
+				Object[] serverData = GsonConverter.gsonToObjectArray(retrievedPaths);
+				ArrayList<String> tempPaths = (ArrayList<String>) Packager.getReturnValue(serverData);
+				paths = tempPaths.toArray(new String[tempPaths.size()]);
+			} catch(Exception e) {
+				paths = new String[0];
+				
+				System.out.println("Request from Server for paths FAILED.");
+				e.printStackTrace();
+			}
 		}
 		
 		// DEBUGGING //

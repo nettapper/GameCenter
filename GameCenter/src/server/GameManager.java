@@ -16,6 +16,25 @@ public class GameManager {
 	protected GameManager(ServerControl controller) {
 		this.controller = controller;
 		this.game = new Game();
+		
+		// Add default methods to the game //
+		
+		Function ping = new Function("ping", game) {
+			@Override
+			public Object run(Object args) {
+				double time = (Double) ((Object[]) args)[0];
+				return new String[] {"pong", "" + (System.currentTimeMillis() - time)};
+			}
+		};
+		
+		Function help = new Function("help", game) {
+			@Override
+			public Object run(Object args) {
+				return getPaths();
+			}
+		};
+		
+		// END //
 	}
 	
 	// Methods
@@ -30,23 +49,15 @@ public class GameManager {
 		return GsonConverter.objectArrayToGson(packSend);
 	}
 	
-	public String pingMe(String args) {
-		double time = (Double) GsonConverter.gsonToObjectArray(args)[0];
-		return GsonConverter.stringArrayToGson(new String[] {"pong", "" + (System.currentTimeMillis() - time)});
-	}
-	
 	public String getGsonPaths() {
 		return GsonConverter.stringArrayToGson(getPaths());
 	}
 	
 	public String[] getPaths() {
-		String[] paths = new String[2 + game.functions.size()];
-		
-		paths[0] = "/ping";
-		paths[1] = "/help";
+		String[] paths = new String[game.functions.size()];
 		
 		for(int i = 0; i < game.functions.size(); i++) {
-			paths[2 + i] = "/" + game.functions.get(i).name;
+			paths[i] = "/" + game.functions.get(i).name;
 		}
 		
 		// DEBUGING //

@@ -41,14 +41,8 @@ public class ClientManager implements HttpHandler {
 	}
 
 	public String update(String path, String args) {
-		if (path.equals("/ping")) {
-			return controller.gamemanager.pingMe(args);
-		} else if (path.equals("/help")) {
-			return controller.gamemanager.getGsonPaths();
-		}
-
 		for (int i = 0; i < paths.length; i++) {
-			if (path.equals(paths[i])) {
+			if (path.equalsIgnoreCase(paths[i])) {
 				return controller.gamemanager.callFunction(path, args);
 			}
 		}
