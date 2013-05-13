@@ -79,6 +79,7 @@ public class ClientManager implements HttpHandler {
 			OutputStream outputStream = exchange.getResponseBody();
 			outputStream.write(response.getBytes());
 			outputStream.close();
+			exchange.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

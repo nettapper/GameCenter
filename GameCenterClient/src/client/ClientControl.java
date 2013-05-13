@@ -44,10 +44,14 @@ public class ClientControl {
 		boolean gn = false;
 		int g = -1;
 		while(!gn) {
-			String guess = connect("/guess", GsonConverter.objectArrayToGson(new Object[] {++g}));
-			
-			Object[] packRecieve = GsonConverter.gsonToObjectArray(guess);
-			gn = (Boolean) Packager.getReturnValue(packRecieve);
+			try {
+				String guess = connect("/guess", GsonConverter.objectArrayToGson(new Object[] {++g}));
+				
+				Object[] packRecieve = GsonConverter.gsonToObjectArray(guess);
+				gn = (Boolean) Packager.getReturnValue(packRecieve);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		System.out.println("Guessed Number! " + g);
@@ -59,8 +63,7 @@ public class ClientControl {
 		return connect(path, GsonConverter.objectArrayToGson(outputData));
 	}
 	
-	public static String connect(String path, String outputData) {
-		
+	public static String connect(String path, String outputData) {		
 		System.out.println("Client attempting a connection to : " + ADDRESS + path); // Debugging
 		
 		HttpURLConnection connection;
@@ -85,13 +88,15 @@ public class ClientControl {
 
 		    try {  //Try to read the data from server
 				input = connection.getInputStream();
+				while (input.available() <= 0); //no data from server, waiting...
 				while (input.available() > 0) {
 					int number = input.read();
 					data += (char) number;
 				}
 			    input.close();
 			} catch (Exception e) {
-				data = "";
+				e.printStackTrace();
+				data = ""; //in the case of an exception, data will not be 1/2 complete (always all or nothing)
 			}
 		    
 		    connection.disconnect();
