@@ -1,3 +1,11 @@
+/**
+ * ClientControl.java
+ * 
+ * An example client class that works with the GameCenter Server
+ * 
+ * @author Calvin Bochulak, Conner Dunn
+ * @version 0.1
+ */
 package client;
 
 import java.io.DataOutputStream;
@@ -16,12 +24,10 @@ public class ClientControl {
 	
 	// TESTING //
 	
-	public static int index = 0;
-	public static String testData = "lolol lolol";
-	
 	// END //
 	
 	public ClientControl() {
+		
 		String retrievedPaths = connect("/help", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
 
 		if (retrievedPaths != "") {
@@ -41,6 +47,7 @@ public class ClientControl {
 		
 		connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
 		
+		//Testing with our guessing game
 		boolean gn = false;
 		int g = -1;
 		while(!gn) {
@@ -55,15 +62,33 @@ public class ClientControl {
 		}
 		
 		System.out.println("Guessed Number! " + g);
+		//end of testing with the guessing game
 		
 		// END //
 	}
-	
+	/**
+	 * Connects to server after changing object[] to string
+	 * 
+	 * @param path The path connecting to
+	 * @param outputData The 'packaged' output data to the server
+	 * 
+	 * @return String The data from the server
+	 */
 	public static String connect(String path, Object[] outputData) {
+		
 		return connect(path, GsonConverter.objectArrayToGson(outputData));
 	}
 	
+	/**
+	 * Connects to server and sends the json string 'outputData'
+	 * 
+	 * @param path The path connecting to
+	 * @param outputData The json formated string to be sent to the server
+	 * 
+	 * @return String The data from the server
+	 */
 	public static String connect(String path, String outputData) {		
+		
 		System.out.println("Client attempting a connection to : " + ADDRESS + path); // Debugging
 		
 		HttpURLConnection connection;
@@ -117,6 +142,7 @@ public class ClientControl {
 	}
 	
 	public static void main(String[] args) {
+		
 		new ClientControl();
 	}
 }
