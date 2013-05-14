@@ -5,19 +5,16 @@ import client.Packager;
 import game.*;
 
 public class GameManager {
-	// Class variables
 	
 	private ServerControl controller;
 	private Game game;
 	
-	
-	// Constructors
-	
 	protected GameManager(ServerControl controller) {
+		
 		this.controller = controller;
 		this.game = new Game();
 		
-		// Add default methods to the game //
+		// Add the default functions to the game
 		
 		Function ping = new Function("ping", game) {
 			@Override
@@ -33,13 +30,20 @@ public class GameManager {
 				return getPaths();
 			}
 		};
-		
-		// END //
 	}
 	
-	// Methods
-	
+	/**
+	 * Receives the path and calls the correct function 
+	 * from the game if the path is correct
+	 * 
+	 * @param path The path used to find the function
+	 * 
+	 * @param args The gson equivalent of the packaged arguments
+	 * 
+	 * @return String Returns the packaged Object[] as a gson String
+	 */
 	public String callFunction(String path, String args) {
+		
 		Object[] packRecieve = Packager.toStandardForm(path, GsonConverter.gsonToObjectArray(args));
 		
 		Object returnVal = game.runFunction(Packager.getPath(packRecieve), Packager.getArgs(packRecieve));
@@ -49,31 +53,37 @@ public class GameManager {
 		return GsonConverter.objectArrayToGson(packSend);
 	}
 	
+	/**
+	 * Returns the game's paths as a gson String
+	 * 
+	 * @return String
+	 */
 	public String getGsonPaths() {
+		
 		return GsonConverter.stringArrayToGson(getPaths());
 	}
 	
+	/**
+	 * Finds all the paths available in the game's function
+	 * 
+	 * @return String[] Returns the paths found
+	 */
 	public String[] getPaths() {
+		
 		String[] paths = new String[game.functions.size()];
 		
 		for(int i = 0; i < game.functions.size(); i++) {
 			paths[i] = "/" + game.functions.get(i).name;
 		}
 		
-		// DEBUGING //
-		
-		for(int i = 0; i < paths.length; i++) {
-			//System.out.println(paths[i]);
-		}
-		
-		//System.out.println("Game functions detected: " + paths.length);
-		
-		// END //
-		
 		return paths;
 	}
 	
+	/**
+	 * Starts the game
+	 */
 	public void startGame() {
+		
 		game.startGame();
 	}
 }
