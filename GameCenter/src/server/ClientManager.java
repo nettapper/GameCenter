@@ -18,12 +18,12 @@ public class ClientManager implements HttpHandler {
 		
 		this.controller = controller;
 		this.paths = paths;
-
-		// Try to initiate server here!
-		System.out.println("Server attempting to open port: " + controller.port); // Debugging
 		
+		System.out.println("Server attempting to open port: " + controller.PORT); // Debugging
+		
+		// Attempt to initiate a server
 		try {
-			HttpServer server = HttpServer.create(new InetSocketAddress(controller.port), 0);
+			HttpServer server = HttpServer.create(new InetSocketAddress(controller.PORT), 0);
 
 			for (int i = 0; i < paths.length; i++) {
 				server.createContext(paths[i], this);
@@ -31,16 +31,30 @@ public class ClientManager implements HttpHandler {
 
 			server.setExecutor(null);
 			server.start();
+			
+			// DEBUGGING //
 
-			System.out.println("Server succesfully opened port: " + controller.port); // Debugging
-			System.out.println("---------------------------------------"); // Debugging
+			System.out.println("Server succesfully opened port: " + controller.PORT);
+			System.out.println("---------------------------------------");
+			
+			// END //
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/** 
+	 * Runs the function that corresponds with the path
+	 * 
+	 * @param path The path used to find and run the function
+	 * 
+	 * @param args The arguments passed through to the function
+	 * 
+	 * @return String The packaged Object[] that has been converted to gson
+	 */
 	public String update(String path, String args) {
+		
 		for (int i = 0; i < paths.length; i++) {
 			if (path.equalsIgnoreCase(paths[i])) {
 				return controller.gamemanager.callFunction(path, args);
@@ -49,9 +63,15 @@ public class ClientManager implements HttpHandler {
 
 		return path + " is not proper.";
 	}
-
-	@Override
+	
+	/**
+	 * Handles the request from the client
+	 * 
+	 * @param exchange Holds the stream in which the server
+	 * 		  can read and send data to the client
+	 */
 	public void handle(HttpExchange exchange) {
+		
 		InputStream inputStream = exchange.getRequestBody();
 
 		try {
@@ -78,7 +98,6 @@ public class ClientManager implements HttpHandler {
 
 			OutputStream outputStream = exchange.getResponseBody();
 			outputStream.write(response.getBytes());
-			outputStream.close();
 			exchange.close();
 		} catch (IOException e) {
 			e.printStackTrace();
