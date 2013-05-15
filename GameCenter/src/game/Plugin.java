@@ -18,7 +18,7 @@ public abstract class Plugin {
 		return null;
 	}
 	
-	public Object[] runFunction(String name, Object[] args) {
+	public Object runFunction(String name, Object args) {
 		for(Function f : functions) {
 			if(f.name.equals(name)) {
 				return f.run(args);

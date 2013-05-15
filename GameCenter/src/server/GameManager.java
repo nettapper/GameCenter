@@ -1,55 +1,89 @@
 package server;
 
 import client.GsonConverter;
+import client.Packager;
 import game.*;
 
 public class GameManager {
-	// Class variables
 	
 	private ServerControl controller;
 	private Game game;
 	
-	
-	// Constructors
-	
-	public GameManager(ServerControl controller) {
+	protected GameManager(ServerControl controller) {
+		
 		this.controller = controller;
 		this.game = new Game();
-	}
-	
-	// Methods
-	
-	public String callFunction(String name, String args) {
-		if(game.findFunction(name) != null) {
-			return GsonConverter.objectArrayToGson(game.runFunction(name, GsonConverter.gsonToObjectArray(args)));
-		}
-		return GsonConverter.stringArrayToGson(new String[] {"ERROR"});
-	}
-	
-	protected String[] getPaths() {
-		String[] paths = new String[2 + game.functions.size()];
 		
-		paths[0] = "/ping";
-		paths[1] = "/help";
+		// Add the default functions to the game
+		
+		Function ping = new Function("ping", game) {
+			@Override
+			public Object run(Object args) {
+				double time = (Double) ((Object[]) args)[0];
+				return new String[] {"pong", "" + (System.currentTimeMillis() - time)};
+			}
+		};
+		
+		Function help = new Function("help", game) {
+			@Override
+			public Object run(Object args) {
+				return getPaths();
+			}
+		};
+	}
+	
+	/**
+	 * Receives the path and calls the correct function 
+	 * from the game if the path is correct
+	 * 
+	 * @param path The path used to find the function
+	 * 
+	 * @param args The gson equivalent of the packaged arguments
+	 * 
+	 * @return String Returns the packaged Object[] as a gson String
+	 */
+	public String callFunction(String path, String args) {
+		
+		Object[] packRecieve = Packager.toStandardForm(path, GsonConverter.gsonToObjectArray(args));
+		
+		Object returnVal = game.runFunction(Packager.getPath(packRecieve), Packager.getArgs(packRecieve));
+		
+		Object[] packSend = Packager.toStandardForm(Packager.getPath(packRecieve), game.findFunction(Packager.getPath(packRecieve)).desc, returnVal, null);
+		
+		return GsonConverter.objectArrayToGson(packSend);
+	}
+	
+	/**
+	 * Returns the game's paths as a gson String
+	 * 
+	 * @return String
+	 */
+	public String getGsonPaths() {
+		
+		return GsonConverter.stringArrayToGson(getPaths());
+	}
+	
+	/**
+	 * Finds all the paths available in the game's function
+	 * 
+	 * @return String[] Returns the paths found
+	 */
+	public String[] getPaths() {
+		
+		String[] paths = new String[game.functions.size()];
 		
 		for(int i = 0; i < game.functions.size(); i++) {
-			paths[2 + i] = "/" + game.functions.get(i).name;
+			paths[i] = "/" + game.functions.get(i).name;
 		}
-		
-		// DEBUGING //
-		
-		for(int i = 0; i < paths.length; i++) {
-			//System.out.println(paths[i]);
-		}
-		
-		//System.out.println("Game functions detected: " + paths.length);
-		
-		// END //
 		
 		return paths;
 	}
 	
+	/**
+	 * Starts the game
+	 */
 	public void startGame() {
+		
 		game.startGame();
 	}
 }

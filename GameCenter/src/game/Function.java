@@ -6,10 +6,11 @@ public class Function {
 	
 	public Function(String name, Game game) {
 		this.name = name;
+		this.desc = "";
 		game.addFunction(this);
 	}
 	
-	public Object[] run(Object[] args) {
+	public Object run(Object args) {
 		
 		return null;
 	}
