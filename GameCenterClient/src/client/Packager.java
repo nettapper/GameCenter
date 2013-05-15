@@ -7,6 +7,8 @@
  */
 package client;
 
+import java.util.ArrayList;
+
 public class Packager {
 	
 	/**
@@ -49,9 +51,9 @@ public class Packager {
 	}
 	
 	/**
-	 * Gets the path from the Standard From Object[]
+	 * Gets the path from the Standard Form Object[]
 	 * 
-	 * @param pack Standard From Object[]
+	 * @param pack Standard Form Object[]
 	 * 
 	 * @return String The path
 	 */
@@ -65,9 +67,9 @@ public class Packager {
 	}
 	
 	/**
-	 * Gets the description from the Standard From Object[]
+	 * Gets the description from the Standard Form Object[]
 	 * 
-	 * @param pack Standard From Object[]
+	 * @param pack Standard Form Object[]
 	 * 
 	 * @return String The description
 	 */
@@ -77,26 +79,34 @@ public class Packager {
 	}
 	
 	/**
-	 * Gets the return value from the Standard From Object[]
+	 * Gets the return value from the Standard Form Object[]
 	 * 
-	 * @param pack Standard From Object[]
+	 * @param pack Standard Form Object[]
 	 * 
 	 * @return Object The return value
 	 */
 	public static Object getReturnValue(Object[] pack) {
 		
-		return pack[2];
+		if(pack[2] instanceof ArrayList) {
+			return ((ArrayList) pack[2]).toArray(new Object[((ArrayList) pack[2]).size()]); // Change ArrayList to Object[]
+		} else {
+			return pack[2];
+		}
 	}
 	
 	/**
-	 * Gets the arguments from the Standard From Object[]
+	 * Gets the arguments from the Standard Form Object[]
 	 * 
-	 * @param pack Standard From Object[]
+	 * @param pack Standard Form Object[]
 	 * 
 	 * @return Object The arguments
 	 */
 	public static Object getArgs(Object[] pack) {
 		
-		return pack[3];
+		if(pack[3] instanceof ArrayList) {
+			return ((ArrayList) pack[3]).toArray(new Object[((ArrayList) pack[3]).size()]); // Change ArrayList to Object[]
+		} else {
+			return pack[3];
+		}
 	}
 }

@@ -28,13 +28,17 @@ public class ClientControl {
 	
 	public ClientControl() {
 		
-		String retrievedPaths = connect("/help", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
+		String serverData = connect("/help", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
 
-		if (retrievedPaths != "") {
+		if (serverData != "") {
 			try {
-				Object[] serverData = GsonConverter.gsonToObjectArray(retrievedPaths);
-				ArrayList<String> tempPaths = (ArrayList<String>) Packager.getReturnValue(serverData);
-				paths = tempPaths.toArray(new String[tempPaths.size()]);
+				Object[] data = GsonConverter.gsonToObjectArray(serverData);
+				Object[] recievedPaths = (Object[]) Packager.getReturnValue(data);
+				
+				paths = new String[recievedPaths.length];
+				for(int i = 0; i < paths.length; i++) {
+					paths[i] = (String) recievedPaths[i];
+				}
 			} catch(Exception e) {
 				paths = new String[0];
 				
