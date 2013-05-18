@@ -4,6 +4,7 @@
  * [1] = String description
  * [2] = Object[] return type/value
  * [3] = Object[] of arguments for path
+ * [4] = String userSessionID (*must be present for connection with any path other than '/genSessionID')
  */
 package client;
 
@@ -21,7 +22,21 @@ public class Packager {
 	 */
 	public static Object[] toStandardForm(String path, Object args) {
 		
-		return toStandardForm(path, "", "", args);
+		return toStandardForm(path, "", "", args, "");
+	}
+	
+	/**
+	 * Changes the path, arguments and userSessionID to match Standard Form (above)
+	 * 
+	 * @param path The path connecting to
+	 * @param args The arguments Object / Object[] to the server
+	 * @param userSessionID The unique user session id retrieved from the server
+	 * 
+	 * @return Object[] Formatted into Standard Form
+	 */
+	public static Object[] toStandardForm(String path, Object args, String userSessionID) {
+		
+		return toStandardForm(path, "", "", args, userSessionID);
 	}
 	
 	/**
@@ -35,6 +50,22 @@ public class Packager {
 	 * @return Object[] Formatted into Standard Form
 	 */
 	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args) {
+		
+		return toStandardForm(path, desc, returnVal, args, "");
+	}
+	
+	/**
+	 * Changes the path, description, method return value, and arguments to match Standard Form (above)
+	 * 
+	 * @param path The path connecting to
+	 * @param desc The method description for the game
+	 * @param returnVal The method return type for the game
+	 * @param args The arguments Object / Object[] to the server
+	 * @param userSessionID The unique user session ID retrieved from the server
+	 * 
+	 * @return Object[] Formatted into Standard Form
+	 */
+	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args, String userSessionID) {
 		
 		Object[] pack = new Object[4];
 		
@@ -108,5 +139,17 @@ public class Packager {
 		} else {
 			return pack[3];
 		}
+	}
+	
+	/**
+	 * Gets the user session ID from the Standard Form Object[]
+	 * 
+	 * @param pack Standard Form Object[]
+	 * 
+	 * @return String The description
+	 */
+	public static String getUserSessionID(Object[] pack) {
+		
+		return (String) pack[4];
 	}
 }
