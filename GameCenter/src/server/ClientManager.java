@@ -57,7 +57,10 @@ public class ClientManager implements HttpHandler {
 		
 		for (int i = 0; i < paths.length; i++) {
 			if (path.equalsIgnoreCase(paths[i])) {
+				//if Packager.getUserSessionID == known UserSessionID continue
 				return controller.gamemanager.callFunction(path, args);
+				//else is path matches '/genSessionID', return a user session id
+				//else return, need user session id.. use the path'/genSessionID'
 			}
 		}
 
