@@ -34,12 +34,11 @@ public class GameManager {
 		Function help = new Function("help", game, "Returns the descrption of the specified path in arg[0]") {
 			@Override
 			public Object run(Object args){
-				System.out.println("the /help function is running!");
 				String requestedPath = (String) Packager.getArgs((Object[]) args);
-				System.out.println("reqested Path: " + requestedPath);
-				String desc = (game.findFunction(requestedPath)).desc;
-				System.out.println("description: " + desc);
-				return desc;
+				if(requestedPath.substring(0, 1).equalsIgnoreCase("/")){
+					requestedPath = requestedPath.substring(1);
+				}
+				return (game.findFunction(requestedPath)).desc;
 			}
 		};
 	}

@@ -11,7 +11,7 @@ public abstract class Plugin {
 	
 	public Function findFunction(String name) {
 		for(Function f : functions) {
-			if(f.name.equals(name)) {
+			if(f.name.equalsIgnoreCase(name)) {
 				return f;
 			}
 		}
