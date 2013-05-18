@@ -10,7 +10,7 @@ public class Function {
 	
 	public Function(String name, Game game, String desc) {
 		this.name = name;
-		this.desc = "";
+		this.desc = desc;
 		game.addFunction(this);
 	}
 	

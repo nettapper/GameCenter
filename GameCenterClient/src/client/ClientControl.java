@@ -48,7 +48,7 @@ public class ClientControl {
 		}
 		
 		// DEBUGGING //
-		//connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping")));
+		connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "ping")));
 		
 		connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
 		
