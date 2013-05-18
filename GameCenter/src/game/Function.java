@@ -5,6 +5,10 @@ public class Function {
 	public String desc;
 	
 	public Function(String name, Game game) {
+		this(name, game, "");
+	}
+	
+	public Function(String name, Game game, String desc) {
 		this.name = name;
 		this.desc = "";
 		game.addFunction(this);

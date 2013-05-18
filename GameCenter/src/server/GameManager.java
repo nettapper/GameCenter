@@ -14,9 +14,9 @@ public class GameManager {
 		this.controller = controller;
 		this.game = new Game();
 		
-		// Add the default functions to the game
+		// Add the default functions (aka. Paths) to the game
 		
-		Function ping = new Function("ping", game) {
+		Function ping = new Function("ping", game, "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it") {
 			@Override
 			public Object run(Object args) {
 				double time = (Double) ((Object[]) args)[0];
@@ -24,7 +24,7 @@ public class GameManager {
 			}
 		};
 		
-		Function help = new Function("help", game) {
+		Function getPaths = new Function("getPaths", game, "Returns all of the valid paths that the server handles") {
 			@Override
 			public Object run(Object args) {
 				return getPaths();
