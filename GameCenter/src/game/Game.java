@@ -14,7 +14,7 @@ public class Game extends Plugin {
 	public Game() {
 		super();
 		
-		Function guess = new Function("guess", this) {
+		Function guess = new Function("guess", "Call this to guess a number. Arguments: [int guess]", this) {
 			@Override
 			public Object run(Object args) {
 				int g = 0;
@@ -25,7 +25,6 @@ public class Game extends Plugin {
 				return new Boolean(g == randomNumber);
 			}
 		};
-		guess.desc = "Call this to guess a number. Arguments: [int guess]";
 	}
 	
 	public void startGame() {

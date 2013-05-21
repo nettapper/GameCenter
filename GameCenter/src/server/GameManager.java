@@ -14,9 +14,20 @@ public class GameManager {
 		this.controller = controller;
 		this.game = new Game();
 		
-		// Add the default functions to the game
+		// Add the default functions (aka. Paths) to the game
 		
-		Function ping = new Function("ping", game) {
+		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
+			@Override
+			public Object run(Object args){
+				String requestedPath = (String) Packager.getArgs((Object[]) args);
+				if(requestedPath.substring(0, 1).equalsIgnoreCase("/")){
+					requestedPath = requestedPath.substring(1);
+				}
+				return (game.findFunction(requestedPath)).desc;
+			}
+		};
+		
+		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
 			public Object run(Object args) {
 				double time = (Double) ((Object[]) args)[0];
@@ -24,10 +35,17 @@ public class GameManager {
 			}
 		};
 		
-		Function help = new Function("help", game) {
+		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
 			public Object run(Object args) {
 				return getPaths();
+			}
+		};
+		
+		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
+			@Override
+			public Object run(Object args) {
+				return "" + ServerControl.generateClientID();
 			}
 		};
 	}

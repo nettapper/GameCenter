@@ -28,7 +28,7 @@ public class ClientControl {
 	
 	public ClientControl() {
 		
-		String serverData = connect("/help", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
+		String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
 
 		if (serverData != "") {
 			try {
@@ -48,6 +48,7 @@ public class ClientControl {
 		}
 		
 		// DEBUGGING //
+		connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping")));
 		
 		connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
 		
