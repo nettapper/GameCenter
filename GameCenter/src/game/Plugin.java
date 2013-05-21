@@ -20,7 +20,7 @@ public abstract class Plugin {
 	
 	public Object runFunction(String name, Object args) {
 		for(Function f : functions) {
-			if(f.name.equals(name)) {
+			if(f.name.equalsIgnoreCase(name)) {
 				return f.run(args);
 			}
 		}
@@ -29,7 +29,7 @@ public abstract class Plugin {
 	
 	public void addFunction(Function newFunc) {
 		for(Function f : functions) {
-			if(f.name.equals(newFunc.name)) return;
+			if(f.name.equalsIgnoreCase(newFunc.name)) return;
 		}
 		functions.add(newFunc);
 	}
