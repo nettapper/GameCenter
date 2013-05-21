@@ -32,9 +32,9 @@ public class ServerControl {
 	 * 
 	 * @return int Unique client ID
 	 */
-	protected synchronized int generateClientID() {
+	protected static synchronized long generateClientID() {
 		
-		return 0;
+		return System.currentTimeMillis();
 	}
 	
 	public static void main(String[] args){
