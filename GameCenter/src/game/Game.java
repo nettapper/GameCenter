@@ -14,7 +14,7 @@ public class Game extends Plugin {
 	public Game() {
 		super();
 		
-		Function guess = new Function("guess", this, "Call this to guess a number. Arguments: [int guess]") {
+		Function guess = new Function("guess", "Call this to guess a number. Arguments: [int guess]", this) {
 			@Override
 			public Object run(Object args) {
 				int g = 0;

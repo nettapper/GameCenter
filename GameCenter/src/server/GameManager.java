@@ -16,7 +16,7 @@ public class GameManager {
 		
 		// Add the default functions (aka. Paths) to the game
 		
-		Function ping = new Function("ping", game, "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it") {
+		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
 			public Object run(Object args) {
 				double time = (Double) ((Object[]) args)[0];
@@ -24,14 +24,14 @@ public class GameManager {
 			}
 		};
 		
-		Function getPaths = new Function("getPaths", game, "Returns all of the valid paths that the server handles") {
+		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
 			public Object run(Object args) {
 				return getPaths();
 			}
 		};
 		
-		Function help = new Function("help", game, "Returns the descrption of the specified path in arg[0]") {
+		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
 			public Object run(Object args){
 				String requestedPath = (String) Packager.getArgs((Object[]) args);
