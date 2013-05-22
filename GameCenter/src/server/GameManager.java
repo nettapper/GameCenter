@@ -9,10 +9,18 @@ public class GameManager {
 	private ServerControl controller;
 	private Game game;
 	
+	// TESTING //
+	
+	private Lobby lobby;
+	
+	// END //
+	
 	protected GameManager(ServerControl controller) {
 		
 		this.controller = controller;
 		this.game = new Game();
+		
+		this.lobby = new Lobby(game);
 		
 		// Add the default functions (aka. Paths) to the game
 		
@@ -48,6 +56,17 @@ public class GameManager {
 				return "" + ServerControl.generateClientID();
 			}
 		};
+		
+		// TESTING //
+		
+		Function joinLobby = new Function("joinLobby", "Trys to join a game lobby", game) {
+			@Override
+			public Object run(Object args) {
+				return lobby.addPlayer(Packager.getUserSessionID((Object[]) args));
+			}
+		};
+		
+		// END //
 	}
 	
 	/**
