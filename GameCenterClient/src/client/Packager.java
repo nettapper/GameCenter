@@ -67,7 +67,7 @@ public class Packager {
 	 */
 	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args, String userSessionID) {
 		
-		Object[] pack = new Object[4];
+		Object[] pack = new Object[5];
 		
 		if(path.substring(0, 1).equalsIgnoreCase("/")) {
 			pack[0] = path.substring(1);
@@ -78,6 +78,7 @@ public class Packager {
 		pack[1] = desc;
 		pack[2] = returnVal;
 		pack[3] = args;
+		pack[4] = userSessionID;
 		return pack;
 	}
 	

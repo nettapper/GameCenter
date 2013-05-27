@@ -6,9 +6,12 @@ public abstract class Plugin {
 	
 	public ArrayList<Function> functions;
 	
+	public ArrayList<String> gameIDs;
+	
 	public Plugin() {
 		
 		this.functions = new ArrayList<Function>();
+		this.gameIDs = new ArrayList<String>();
 	}
 	
 	public Function findFunction(String name) {
@@ -47,5 +50,13 @@ public abstract class Plugin {
 	public void removeFunction(int index) {
 		
 		if(index >= 0 && index < functions.size()) functions.remove(index);
+	}
+	
+	public ArrayList<String> getGameIDs() {
+		ArrayList<String> gids = new ArrayList<String>();
+		for(String id : gameIDs) {
+			gids.add(id);
+		}
+		return gids;
 	}
 }
