@@ -121,6 +121,6 @@ public class GameManager {
 	 */
 	public void startGame() {
 		
-		game.startGame();
+		game.start();
 	}
 }
