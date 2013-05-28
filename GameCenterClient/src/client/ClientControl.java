@@ -28,7 +28,7 @@ public class ClientControl {
 	
 	public ClientControl() {
 		
-		String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
+		String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getPaths", "paths please!")));
 
 		if (serverData != "") {
 			try {
@@ -50,14 +50,14 @@ public class ClientControl {
 		// DEBUGGING //
 		connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping")));
 		
-		connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
+		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()))));
 		
 		//Testing with our guessing game
 		boolean gn = false;
 		int g = -1;
 		while(!gn) {
 			try {
-				String guess = connect("/guess", GsonConverter.objectArrayToGson(new Object[] {++g}));
+				String guess = connect("/guess", Packager.toStandardForm("/guess", new Integer(++g)));
 				
 				Object[] packRecieve = GsonConverter.gsonToObjectArray(guess);
 				gn = (Boolean) Packager.getReturnValue(packRecieve);

@@ -27,7 +27,7 @@ public class GameManager {
 		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
 			public Object run(Object args){
-				String requestedPath = (String) Packager.getArgs((Object[]) args);
+				String requestedPath = (String) args;
 				if(requestedPath.substring(0, 1).equalsIgnoreCase("/")){
 					requestedPath = requestedPath.substring(1);
 				}
@@ -38,8 +38,8 @@ public class GameManager {
 		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
 			public Object run(Object args) {
-				double time = (Double) ((Object[]) args)[0];
-				return new String[] {"pong", "" + (System.currentTimeMillis() - time)};
+				double time = (Double) args;
+				return System.currentTimeMillis() - time;
 			}
 		};
 		
@@ -62,7 +62,7 @@ public class GameManager {
 		Function joinLobby = new Function("joinLobby", "Trys to join a game lobby", game) {
 			@Override
 			public Object run(Object args) {
-				return lobby.addPlayer(Packager.getUserSessionID((Object[]) args));
+				return lobby.addPlayer((String) args);
 			}
 		};
 		
@@ -79,9 +79,9 @@ public class GameManager {
 	 * 
 	 * @return String Returns the packaged Object[] as a gson String
 	 */
-	public String callFunction(String path, String args) {
+	public String callFunction(String gsonPack) {
 		
-		Object[] packRecieve = Packager.toStandardForm(path, GsonConverter.gsonToObjectArray(args));
+		Object[] packRecieve = GsonConverter.gsonToObjectArray(gsonPack);
 		
 		Object returnVal = game.runFunction(Packager.getPath(packRecieve), Packager.getArgs(packRecieve));
 		

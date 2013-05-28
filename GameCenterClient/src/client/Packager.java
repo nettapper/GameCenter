@@ -5,6 +5,13 @@
  * [2] = Object[] return type/value
  * [3] = Object[] of arguments for path
  * [4] = String userSessionID (*must be present for connection with any path other than '/genSessionID')
+ * 
+ * Notes:
+ * 
+ * - An array inside of an array will be converted into an ArrayList automatically because of gson
+ * 
+ * - Any primitive number value such as int, long, double, or float (even the wrapper classes) will be 
+ *   converted into a Double automatically because of gson
  */
 package client;
 

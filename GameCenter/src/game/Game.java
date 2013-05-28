@@ -7,7 +7,7 @@ public class Game extends Plugin {
 	private boolean hasWon;
 	private String winner;
 	
-	private int randomNumber;
+	private double randomNumber;
 	
 	// Constructors
 	
@@ -17,9 +17,9 @@ public class Game extends Plugin {
 		Function guess = new Function("guess", "Call this to guess a number. Arguments: [int guess]", this) {
 			@Override
 			public Object run(Object args) {
-				int g = 0;
+				double g = 0;
 				try {
-					g = ((Double) ((Object[]) args)[0]).intValue();
+					g = (Double) args;
 				} catch(Exception e) {e.printStackTrace(); }
 				
 				return new Boolean(g == randomNumber);
