@@ -30,11 +30,11 @@ public class ServerControl {
 	 * Currently does nothing
 	 * Will generate an ID that is unique to the connected clients
 	 * 
-	 * @return int Unique client ID
+	 * @return String Unique client ID
 	 */
-	protected static synchronized long generateClientID() {
+	protected static synchronized String generateClientID() {
 		
-		return System.currentTimeMillis();
+		return Integer.toString((int) System.currentTimeMillis(), 16);
 	}
 	
 	public static void main(String[] args){

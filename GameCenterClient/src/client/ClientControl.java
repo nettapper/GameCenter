@@ -53,7 +53,11 @@ public class ClientControl {
 		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()))));
 		
 		//Testing with our tictactoe game
+		String gsonSessionID = connect("/getSessionID", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getSessionID", "")));
+		Object[] arrraySessionID = GsonConverter.gsonToObjectArray(gsonSessionID);
+		String myID = (String) Packager.getReturnValue(arrraySessionID);
 		
+		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()), myID)));
 		//end of testing with the tictactoe game
 		
 		// END //
