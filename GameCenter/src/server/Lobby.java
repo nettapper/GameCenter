@@ -16,7 +16,6 @@ public class Lobby {
 	private ArrayList<String> availableGameIDs;
 	private ArrayList<Player> players;
 	
-	
 	protected Lobby(Game game) {
 		
 		this.game = game;

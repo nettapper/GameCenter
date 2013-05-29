@@ -52,25 +52,13 @@ public class ClientControl {
 		
 		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()))));
 		
-		//Testing with our guessing game
-		boolean gn = false;
-		int g = -1;
-		while(!gn) {
-			try {
-				String guess = connect("/guess", Packager.toStandardForm("/guess", new Integer(++g)));
-				
-				Object[] packRecieve = GsonConverter.gsonToObjectArray(guess);
-				gn = (Boolean) Packager.getReturnValue(packRecieve);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		//Testing with our tictactoe game
 		
-		System.out.println("Guessed Number! " + g);
-		//end of testing with the guessing game
+		//end of testing with the tictactoe game
 		
 		// END //
 	}
+	
 	/**
 	 * Connects to server after changing object[] to string
 	 * 
