@@ -4,6 +4,8 @@ import game.Game;
 
 import java.util.ArrayList;
 
+import client.Packager;
+
 /*
  * Handles players in or out of games
  * It contains the up to the max number of players in a current game
@@ -22,6 +24,13 @@ public class Lobby {
 		
 		this.availableGameIDs = game.getGameIDs();
 		this.players = new ArrayList<Player>();
+	}
+	
+	protected Object[] callFunction(Object[] pack) {
+		
+		Object returnVal = game.runFunction(Packager.getPath(pack), Packager.getArgs(pack));
+		
+		return Packager.toStandardForm(Packager.getPath(pack), game.findFunction(Packager.getPath(pack)).desc, returnVal, null);
 	}
 	
 	

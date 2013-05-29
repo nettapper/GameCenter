@@ -81,13 +81,9 @@ public class GameManager {
 	 */
 	public String callFunction(String gsonPack) {
 		
-		Object[] packRecieve = GsonConverter.gsonToObjectArray(gsonPack);
+		Object[] newPack = lobby.callFunction(GsonConverter.gsonToObjectArray(gsonPack));
 		
-		Object returnVal = game.runFunction(Packager.getPath(packRecieve), Packager.getArgs(packRecieve));
-		
-		Object[] packSend = Packager.toStandardForm(Packager.getPath(packRecieve), game.findFunction(Packager.getPath(packRecieve)).desc, returnVal, null);
-		
-		return GsonConverter.objectArrayToGson(packSend);
+		return GsonConverter.objectArrayToGson(newPack);
 	}
 	
 	/**
