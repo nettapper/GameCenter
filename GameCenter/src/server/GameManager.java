@@ -1,7 +1,6 @@
 package server;
 
 import client.GsonConverter;
-import client.Packager;
 import game.*;
 
 public class GameManager {
@@ -24,25 +23,6 @@ public class GameManager {
 		
 		// Add the default functions (aka. Paths) to the game
 		
-		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
-			@Override
-			public Object run(Object[] args){
-				String requestedPath = (String) args[0];
-				if(requestedPath.substring(0, 1).equalsIgnoreCase("/")){
-					requestedPath = requestedPath.substring(1);
-				}
-				return (game.findFunction(requestedPath)).desc;
-			}
-		};
-		
-		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
-			@Override
-			public Object run(Object[] args) {
-				double time = (Double) args[0];
-				return System.currentTimeMillis() - time;
-			}
-		};
-		
 		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
 			public Object run(Object[] args) {
@@ -50,10 +30,24 @@ public class GameManager {
 			}
 		};
 		
+		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
+			@Override
+			public Object run(Object[] args){
+				return help((String) args[0]);
+			}
+		};
+		
+		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
+			@Override
+			public Object run(Object[] args) {
+				return ping((Double) args[0]);
+			}
+		};
+		
 		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
 			@Override
 			public Object run(Object[] args) {
-				return "" + ServerControl.generateClientID();
+				return generateClientID();
 			}
 		};
 		
@@ -73,13 +67,11 @@ public class GameManager {
 	 * Receives the path and calls the correct function 
 	 * from the game if the path is correct
 	 * 
-	 * @param path The path used to find the function
-	 * 
-	 * @param args The gson equivalent of the packaged arguments
+	 * @param gsonPack The gson equivalent of the package
 	 * 
 	 * @return String Returns the packaged Object[] as a gson String
 	 */
-	public String callFunction(String gsonPack) {
+	protected String callFunction(String gsonPack) {
 		
 		Object[] newPack = lobby.callFunction(GsonConverter.gsonToObjectArray(gsonPack));
 		
@@ -87,21 +79,11 @@ public class GameManager {
 	}
 	
 	/**
-	 * Returns the game's paths as a gson String
-	 * 
-	 * @return String
-	 */
-	public String getGsonPaths() {
-		
-		return GsonConverter.stringArrayToGson(getPaths());
-	}
-	
-	/**
 	 * Finds all the paths available in the game's function
 	 * 
 	 * @return String[] Returns the paths found
 	 */
-	public String[] getPaths() {
+	protected String[] getPaths() {
 		
 		String[] paths = new String[game.functions.size()];
 		
@@ -113,9 +95,44 @@ public class GameManager {
 	}
 	
 	/**
+	 * 
+	 * @param path
+	 * 
+	 * @return
+	 */
+	protected String help(String path) {
+		if(path.substring(0, 1).equalsIgnoreCase("/")){
+			path = path.substring(1);
+		}
+		return (game.findFunction(path)).desc;
+	}
+	
+	/**
+	 * 
+	 * @param receiveTime
+	 * 
+	 * @return
+	 */
+	protected Double ping(Double receiveTime) {
+		
+		return System.currentTimeMillis() - receiveTime;
+	}
+	
+	/**
+	 * Currently does nothing
+	 * Will generate an ID that is unique to the connected clients
+	 * 
+	 * @return String Unique client ID
+	 */
+	protected static synchronized String generateClientID() {
+		
+		return Integer.toString((int) System.currentTimeMillis(), 16);
+	}
+	
+	/**
 	 * Starts the game
 	 */
-	public void startGame() {
+	protected void startGame() {
 		
 		game.start();
 	}

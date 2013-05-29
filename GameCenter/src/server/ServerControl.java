@@ -26,17 +26,6 @@ public class ServerControl {
 		this.gamemanager.startGame();
 	}
 	
-	/**
-	 * Currently does nothing
-	 * Will generate an ID that is unique to the connected clients
-	 * 
-	 * @return String Unique client ID
-	 */
-	protected static synchronized String generateClientID() {
-		
-		return Integer.toString((int) System.currentTimeMillis(), 16);
-	}
-	
 	public static void main(String[] args){
 		
 		new ServerControl();
