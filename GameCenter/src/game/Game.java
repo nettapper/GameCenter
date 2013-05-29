@@ -13,30 +13,28 @@ public class Game extends Plugin {
 		
 		Function canPlay = new Function("canPlay", this) {
 			@Override
-			public Object run(Object args) {
-				return canPlay((String) args);
+			public Object run(Object[] args) {
+				return canPlay((String) args[0]);
 			}
 		};
 		
 		Function isAvailable = new Function("isAvailable", this) {
 			@Override
-			public Object run(Object args) {
-				Object[] coords = (Object[]) args;
-				return isAvailable((Integer) coords[0], (Integer) coords[1]);
+			public Object run(Object[] args) {
+				return isAvailable((Integer) args[0], (Integer) args[1]);
 			}
 		};
 		
 		Function placeAt = new Function("placeAt", this) {
 			@Override
-			public Object run(Object args) {
-				Object[] all = (Object[]) args;
-				return placeAt((String) all[0], (Integer) all[1], (Integer) all[2]);
+			public Object run(Object[] args) {
+				return placeAt((String) args[0], (Integer) args[1], (Integer) args[2]);
 			}
 		};
 		
 		Function hasWinner = new Function("hasWinner", this) {
 			@Override
-			public Object run(Object args) {
+			public Object run(Object[] args) {
 				return hasWinner();
 			}
 		};
@@ -50,7 +48,6 @@ public class Game extends Plugin {
 		this.playersTurn = 0;
 		
 		this.board = new String[3][3];
-		Arrays.fill(this.board, "");
 	}
 	
 	private String getTurn() {

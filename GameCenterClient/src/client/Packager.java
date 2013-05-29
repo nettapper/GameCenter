@@ -84,8 +84,16 @@ public class Packager {
 		
 		pack[1] = desc;
 		pack[2] = returnVal;
-		pack[3] = args;
+		
+		if(args instanceof Object[]) {
+			pack[3] = args;
+		} else {
+			Object[] newArgs = new Object[] {args};
+			pack[3] = newArgs;
+		}
+		
 		pack[4] = userSessionID;
+		
 		return pack;
 	}
 	
@@ -138,14 +146,14 @@ public class Packager {
 	 * 
 	 * @param pack Standard Form Object[]
 	 * 
-	 * @return Object The arguments
+	 * @return Object[] The arguments
 	 */
-	public static Object getArgs(Object[] pack) {
+	public static Object[] getArgs(Object[] pack) {
 		
 		if(pack[3] instanceof ArrayList) {
 			return ((ArrayList) pack[3]).toArray(new Object[((ArrayList) pack[3]).size()]); // Change ArrayList to Object[]
 		} else {
-			return pack[3];
+			return (Object[]) pack[3];
 		}
 	}
 	

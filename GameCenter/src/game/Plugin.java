@@ -28,7 +28,7 @@ public abstract class Plugin {
 		return null;
 	}
 	
-	public Object runFunction(String name, Object args) {
+	public Object runFunction(String name, Object[] args) {
 		
 		for(Function f : functions) {
 			if(f.name.equalsIgnoreCase(name)) {

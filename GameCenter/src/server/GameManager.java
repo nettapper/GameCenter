@@ -26,8 +26,8 @@ public class GameManager {
 		
 		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
-			public Object run(Object args){
-				String requestedPath = (String) args;
+			public Object run(Object[] args){
+				String requestedPath = (String) args[0];
 				if(requestedPath.substring(0, 1).equalsIgnoreCase("/")){
 					requestedPath = requestedPath.substring(1);
 				}
@@ -37,22 +37,22 @@ public class GameManager {
 		
 		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
-			public Object run(Object args) {
-				double time = (Double) args;
+			public Object run(Object[] args) {
+				double time = (Double) args[0];
 				return System.currentTimeMillis() - time;
 			}
 		};
 		
 		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
-			public Object run(Object args) {
+			public Object run(Object[] args) {
 				return getPaths();
 			}
 		};
 		
 		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
 			@Override
-			public Object run(Object args) {
+			public Object run(Object[] args) {
 				return "" + ServerControl.generateClientID();
 			}
 		};
@@ -61,8 +61,8 @@ public class GameManager {
 		
 		Function joinLobby = new Function("joinLobby", "Trys to join a game lobby", game) {
 			@Override
-			public Object run(Object args) {
-				return lobby.addPlayer((String) args);
+			public Object run(Object[] args) {
+				return lobby.addPlayer((String) args[0]);
 			}
 		};
 		

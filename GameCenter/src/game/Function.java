@@ -16,7 +16,7 @@ public class Function {
 		plugin.addFunction(this);
 	}
 	
-	public Object run(Object args) {
+	public Object run(Object[] args) {
 		
 		return null;
 	}

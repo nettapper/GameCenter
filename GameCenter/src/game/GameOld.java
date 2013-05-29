@@ -16,10 +16,10 @@ public class GameOld extends Plugin {
 		
 		Function guess = new Function("guess", "Call this to guess a number. Arguments: [int guess]", this) {
 			@Override
-			public Object run(Object args) {
+			public Object run(Object[] args) {
 				double g = 0;
 				try {
-					g = (Double) args;
+					g = (Double) args[0];
 				} catch(Exception e) {e.printStackTrace(); }
 				
 				return new Boolean(g == randomNumber);
