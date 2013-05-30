@@ -1,7 +1,5 @@
 package game;
 
-import java.util.Arrays;
-
 public class Game extends Plugin {
 	
 	private int playersTurn;

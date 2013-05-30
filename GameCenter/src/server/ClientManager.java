@@ -53,7 +53,7 @@ public class ClientManager implements HttpHandler {
 	 * 
 	 * @return String The packaged Object[] that has been converted to gson
 	 */
-	public String update(String path, String gsonPack) {
+	protected String update(String path, String gsonPack) {
 		
 		for (int i = 0; i < paths.length; i++) {
 			if (path.equalsIgnoreCase(paths[i])) {
