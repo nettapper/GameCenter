@@ -22,14 +22,15 @@ public class ClientControl {
 	
 	protected String[] paths;
 	
-	// TESTING //
-	
-	// END //
-	
 	public ClientControl() {
 		
-		//String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getPaths", "paths please!")));
-		String serverData = "";
+		String gsonSessionID = connect("/getSessionID", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getSessionID", "")));
+		Object[] arrraySessionID = GsonConverter.gsonToObjectArray(gsonSessionID);
+		String myID = (String) Packager.getReturnValue(arrraySessionID);
+		
+		connect("/joinLobby", GsonConverter.objectArrayToGson(Packager.toStandardForm("/joinLobby", myID, myID)));
+		
+		String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getPaths", "paths please!", myID)));
 		
 		if (!serverData.equals("")) {
 			try {
@@ -48,21 +49,14 @@ public class ClientControl {
 			}
 		}
 		
-		// DEBUGGING //
-		//connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping")));
-		
-		//connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()))));
-		
+		// DEBUGGING //				
 		//Testing with our tictactoe game
-		String gsonSessionID = connect("/getSessionID", GsonConverter.objectArrayToGson(Packager.toStandardForm("/getSessionID", "")));
-		Object[] arrraySessionID = GsonConverter.gsonToObjectArray(gsonSessionID);
-		String myID = (String) Packager.getReturnValue(arrraySessionID);
 		
-		connect("/joinLobby", GsonConverter.objectArrayToGson(Packager.toStandardForm("/joinLobby", myID, myID)));
-		
+		connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping", myID)));
+
 		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()), myID)));
-		//end of testing with the tictactoe game
 		
+		//end of testing with the tictactoe game
 		// END //
 	}
 	
