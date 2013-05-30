@@ -43,7 +43,7 @@ public class Lobby {
 		
 		// Check if the player is in the lobby already
 		for(Player p : players) {
-			if(p.sessionID == sessionID) {
+			if(p.sessionID.equals(sessionID)) {
 				return false;
 			}
 		}
