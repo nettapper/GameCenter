@@ -1,5 +1,7 @@
 package server;
 
+import java.util.ArrayList;
+
 import client.GsonConverter;
 import client.Packager;
 import game.*;
@@ -12,6 +14,7 @@ public class GameManager {
 	// TESTING //
 	
 	private Lobby lobby;
+	private static ArrayList<String> knownSessionIDs;
 	
 	// END //
 	
@@ -21,6 +24,8 @@ public class GameManager {
 		this.game = new Game();
 		
 		this.lobby = new Lobby(game);
+		knownSessionIDs = new ArrayList<String>();
+		
 		
 		// Add the default functions (aka. Paths) to the game
 		
@@ -140,7 +145,9 @@ public class GameManager {
 	 */
 	protected static synchronized String generateClientID() {
 		
-		return Integer.toString((int) System.currentTimeMillis(), 16);
+		String id = Integer.toString((int) System.currentTimeMillis(), 16);
+		knownSessionIDs.add(id);
+		return id;
 	}
 	
 	/**
