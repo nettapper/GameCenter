@@ -79,11 +79,24 @@ public class GameManager {
 	 * 
 	 * @return String Returns the packaged Object[] as a gson String
 	 */
-	public String callFunction(String gsonPack) {
+	public String callFunction(String gsonPack) { //##### Work in progress #####
 		
-		Object[] newPack = lobby.callFunction(GsonConverter.gsonToObjectArray(gsonPack));
+		Object[] pack = GsonConverter.gsonToObjectArray(gsonPack);
+		Object[] packToClient = Packager.toStandardForm(Packager.getPath(pack), "Someting Failed, are you in the Lobby / do you hava a SessionID?", false, null);
 		
-		return GsonConverter.objectArrayToGson(newPack);
+		for(Player p: lobby.players){
+			System.out.println("got to the player loop.");
+			if(true) {  //if the player is in the lobby (then they have a sessionID)
+				System.out.println("its the truth");
+				packToClient = lobby.callFunction(pack);
+				break;
+			}
+		}
+		//else if path matches '/joinLobby', add the user to the game lobby (must already have a sessionID)
+		//else if path matches '/genSessionID', return a user session id
+		//else return, need user session id / need to be in a lobby.. use the path'/genSessionID' and '/joinLobby'
+		
+		return GsonConverter.objectArrayToGson(packToClient);
 	}
 	
 	/**

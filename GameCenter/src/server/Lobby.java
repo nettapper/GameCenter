@@ -16,7 +16,7 @@ public class Lobby {
 	private Game game;
 	
 	private ArrayList<String> availableGameIDs;
-	private ArrayList<Player> players;
+	protected ArrayList<Player> players;
 	
 	protected Lobby(Game game) {
 		
