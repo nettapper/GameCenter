@@ -56,6 +56,11 @@ public class ClientControl {
 
 		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()), myID)));
 		
+		while(! (Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/hasWinner", GsonConverter.objectArrayToGson(Packager.toStandardForm("/hasWinner", "Game Done??", myID)))))) {
+			if ((Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/canPlay", GsonConverter.objectArrayToGson(Packager.toStandardForm("/canPlay", "My Turn?", myID)))))) {
+				connect("/placeAt", GsonConverter.objectArrayToGson(Packager.toStandardForm("/placeAt", new Object[] {0,0}, myID)));
+			}
+		}
 		//end of testing with the tictactoe game
 		// END //
 	}
