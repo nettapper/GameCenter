@@ -124,6 +124,14 @@ public class Game extends Plugin {
 		}
 		
 		while(y < board.length) {
+			
+			if(hasWinner) {
+				return comparer;
+			} else {
+				comparer = board[y][x];
+				hasWinner = false;
+			}
+			
 			while(x < board[0].length) {
 				if(board[y][x].equalsIgnoreCase(comparer) && !isAvailable(x, y)) {
 					hasWinner = true;
@@ -133,19 +141,20 @@ public class Game extends Plugin {
 				}
 				x++;
 			}
+			
 			x = 0;
 			y++;
 		}
 		
-		if(hasWinner) {
-			return comparer;
-		} else {
-			x = 0;
-			y = 0;
-			comparer = board[y][x];
-		}
-		
 		while(x < board.length) {
+			
+			if(hasWinner) {
+				return comparer;
+			} else {
+				comparer = board[y][x];
+				hasWinner = false;
+			}
+			
 			while(y < board[0].length) {
 				if(board[y][x].equalsIgnoreCase(comparer) && !isAvailable(x, y)) {
 					hasWinner = true;
@@ -159,11 +168,7 @@ public class Game extends Plugin {
 			x++;
 		}
 		
-		if(hasWinner) {
-			return comparer;
-		} else {
-			return "";
-		}
+		return "";
 	}
 	
 	private void nextPlayersTurn() {
