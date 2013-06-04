@@ -4,7 +4,9 @@ public class Game extends Plugin {
 	
 	private int playersTurn;
 	
-	private String[][] board;
+	private String[][] board =  {{" ", " ", " "},
+								 {" ", " ", " "},
+								 {" ", " ", " "}};
 	
 	public Game() {
 		super();
@@ -44,8 +46,6 @@ public class Game extends Plugin {
 	@Override
 	public void start() {
 		this.playersTurn = 0;
-		
-		this.board = new String[3][3];
 	}
 	
 	private String getTurn() {
@@ -53,6 +53,7 @@ public class Game extends Plugin {
 	}
 	
 	private boolean canPlay(String gameID) {
+		System.out.println(gameID);
 		if(getTurn().equalsIgnoreCase(gameID)) {
 			return true;
 		} else {
@@ -61,7 +62,7 @@ public class Game extends Plugin {
 	}
 	
 	private boolean isAvailable(int x, int y) {
-		if(board[y][x].equals("")) {
+		if(board[y][x].equals(" ")) {
 			return true;
 		} else {
 			return false;
@@ -72,13 +73,16 @@ public class Game extends Plugin {
 		if(canPlay(gameID) && isAvailable(x, y)) {
 			board[y][x] = gameID;
 			nextPlayersTurn();
+			
+			toString();
+			
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private String hasWinner() {
+	private boolean hasWinner() {
 		boolean hasWinner = false;
 		
 		int x = 0;
@@ -97,7 +101,7 @@ public class Game extends Plugin {
 		}
 		
 		if(hasWinner) {
-			return comparer;
+			return true;
 		} else {
 			x = 0;
 			y = board.length - 1;
@@ -116,7 +120,7 @@ public class Game extends Plugin {
 		}
 		
 		if(hasWinner) {
-			return comparer;
+			return true;
 		} else {
 			x = 0;
 			y = 0;
@@ -126,7 +130,7 @@ public class Game extends Plugin {
 		while(y < board.length) {
 			
 			if(hasWinner) {
-				return comparer;
+				return true;
 			} else {
 				comparer = board[y][x];
 				hasWinner = false;
@@ -146,16 +150,19 @@ public class Game extends Plugin {
 			y++;
 		}
 		
-		while(x < board.length) {
-			
+		x = 0;
+		y = 0;
+		comparer = board[y][x];
+		
+		while(x < board[0].length) {
 			if(hasWinner) {
-				return comparer;
+				return true;
 			} else {
 				comparer = board[y][x];
 				hasWinner = false;
 			}
 			
-			while(y < board[0].length) {
+			while(y < board.length) {
 				if(board[y][x].equalsIgnoreCase(comparer) && !isAvailable(x, y)) {
 					hasWinner = true;
 				} else {
@@ -168,7 +175,7 @@ public class Game extends Plugin {
 			x++;
 		}
 		
-		return "";
+		return false;
 	}
 	
 	private void nextPlayersTurn() {
@@ -176,5 +183,18 @@ public class Game extends Plugin {
 		if(playersTurn >= gameIDs.size()) {
 			playersTurn = 0;
 		}
+	}
+	
+	public String toString() {
+		String ret = "{";
+		for(int y = 0; y < board.length; y++) {
+			ret += " {";
+			for(int x = 0; x < board[0].length; x++) {
+				ret += board[y][x] + ",";
+			}
+			ret += "}, ";
+		}
+		ret += "}";
+		return ret;
 	}
 }

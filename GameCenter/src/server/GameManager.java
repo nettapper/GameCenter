@@ -92,7 +92,6 @@ public class GameManager {
 		//else if path matches '/joinLobby', add the user to the game lobby (must already have a sessionID)
 		if(Packager.getPath(packFromClient).equalsIgnoreCase("joinLobby")){
 			for(String s: knownSessionIDs){
-				System.out.println("in the for loop");
 				if(s.equals(Packager.getUserSessionID(packFromClient))){ //is a know sessionID
 					Object returnVal = game.runFunction(Packager.getPath(packFromClient), Packager.getArgs(packFromClient));
 					packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), game.findFunction(Packager.getPath(packFromClient)).desc, returnVal, null);
