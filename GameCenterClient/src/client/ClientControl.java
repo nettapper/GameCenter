@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientControl {
 		
@@ -58,7 +59,14 @@ public class ClientControl {
 		
 		while(! (Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/hasWinner", GsonConverter.objectArrayToGson(Packager.toStandardForm("/hasWinner", "Game Done??", myID)))))) {
 			if ((Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/canPlay", GsonConverter.objectArrayToGson(Packager.toStandardForm("/canPlay", "My Turn?", myID)))))) {
-				connect("/placeAt", GsonConverter.objectArrayToGson(Packager.toStandardForm("/placeAt", new Object[] {0,0}, myID)));
+				int x,y;
+				Scanner sc = new Scanner(System.in);
+				System.out.println("Enter x:");
+				x = sc.nextInt();
+				System.out.println("Enter y:");
+				y = sc.nextInt();
+				System.out.println("ints to server: " + x + " " + y);
+				connect("/placeAt", GsonConverter.objectArrayToGson(Packager.toStandardForm("/placeAt", new Object[] {x,y}, myID)));
 			}
 		}
 		//end of testing with the tictactoe game
