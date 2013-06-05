@@ -28,7 +28,18 @@ public class Lobby {
 	
 	protected Object[] callFunction(Object[] pack) {
 		
-		Object returnVal = game.runFunction(Packager.getPath(pack), Packager.getArgs(pack));
+		String userSessionID = Packager.getUserSessionID(pack);
+		String userGameID = "";
+		
+		for(Player p : players) {
+			if(userSessionID.equalsIgnoreCase(p.sessionID)) {
+				userGameID = p.gameID;
+			}
+		}
+		
+		Object[] gamePack = Packager.toStandardForm(Packager.getPath(pack), Packager.getArgs(pack), userSessionID, userGameID);
+		
+		Object returnVal = game.runFunction(gamePack);
 		
 		return Packager.toStandardForm(Packager.getPath(pack), game.findFunction(Packager.getPath(pack)).desc, returnVal, null);
 	}

@@ -2,6 +2,8 @@ package game;
 
 import java.util.ArrayList;
 
+import client.Packager;
+
 public abstract class Plugin {
 	
 	public ArrayList<Function> functions;
@@ -28,13 +30,14 @@ public abstract class Plugin {
 		return null;
 	}
 	
-	public Object runFunction(String name, Object[] args) {
+	public Object runFunction(Object[] pack) {
 		
 		for(Function f : functions) {
-			if(f.name.equalsIgnoreCase(name)) {
-				return f.run(args);
+			if(f.name.equalsIgnoreCase(Packager.getPath(pack))) {
+				return f.run(pack);
 			}
 		}
+		System.out.println("here");
 		return null;
 	}
 	

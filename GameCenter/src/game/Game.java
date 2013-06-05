@@ -1,5 +1,7 @@
 package game;
 
+import client.Packager;
+
 public class Game extends Plugin {
 	
 	private int playersTurn;
@@ -13,28 +15,30 @@ public class Game extends Plugin {
 		
 		Function canPlay = new Function("canPlay", this) {
 			@Override
-			public Object run(Object[] args) {
-				return canPlay((String) args[0]);
+			public Object run(Object[] pack) {
+				return canPlay(Packager.getGameID(pack));
 			}
 		};
 		
 		Function isAvailable = new Function("isAvailable", this) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Object[] pack) {
+				Object[] args = Packager.getArgs(pack);
 				return isAvailable((Integer) args[0], (Integer) args[1]);
 			}
 		};
 		
 		Function placeAt = new Function("placeAt", this) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Object[] pack) {
+				Object[] args = Packager.getArgs(pack);
 				return placeAt((String) args[0], (Integer) args[1], (Integer) args[2]);
 			}
 		};
 		
 		Function hasWinner = new Function("hasWinner", this) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Object[] pack) {
 				return hasWinner();
 			}
 		};

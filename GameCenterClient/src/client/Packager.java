@@ -5,6 +5,7 @@
  * [2] = Object[] return type/value
  * [3] = Object[] of arguments for path
  * [4] = String userSessionID (*must be present for connection with any path other than '/genSessionID')
+ * [5] = String gameID (for server use only)
  * 
  * Notes:
  * 
@@ -29,7 +30,7 @@ public class Packager {
 	 */
 	public static Object[] toStandardForm(String path, Object args) {
 		
-		return toStandardForm(path, "", "", args, "");
+		return toStandardForm(path, "", "", args, "", "");
 	}
 	
 	/**
@@ -43,7 +44,12 @@ public class Packager {
 	 */
 	public static Object[] toStandardForm(String path, Object args, String userSessionID) {
 		
-		return toStandardForm(path, "", "", args, userSessionID);
+		return toStandardForm(path, "", "", args, userSessionID, "");
+	}
+	
+	public static Object[] toStandardForm(String path, Object args, String userSessionID, String gameID) {
+		
+		return toStandardForm(path, "", "", args, userSessionID, gameID);
 	}
 	
 	/**
@@ -58,7 +64,7 @@ public class Packager {
 	 */
 	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args) {
 		
-		return toStandardForm(path, desc, returnVal, args, "");
+		return toStandardForm(path, desc, returnVal, args, "", "");
 	}
 	
 	/**
@@ -72,7 +78,7 @@ public class Packager {
 	 * 
 	 * @return Object[] Formatted into Standard Form
 	 */
-	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args, String userSessionID) {
+	public static Object[] toStandardForm(String path, String desc, Object returnVal, Object args, String userSessionID, String gameID) {
 		
 		Object[] pack = new Object[5];
 		
@@ -93,6 +99,7 @@ public class Packager {
 		}
 		
 		pack[4] = userSessionID;
+		pack[5] = gameID;
 		
 		return pack;
 	}
@@ -167,5 +174,10 @@ public class Packager {
 	public static String getUserSessionID(Object[] pack) {
 		
 		return (String) pack[4];
+	}
+	
+	public static String getGameID(Object[] pack) {
+		
+		return (String) pack[5];
 	}
 }

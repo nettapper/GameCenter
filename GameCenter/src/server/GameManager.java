@@ -31,28 +31,28 @@ public class GameManager {
 		
 		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Object[] pack) {
 				return getPaths();
 			}
 		};
 		
 		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
-			public Object run(Object[] args){
-				return help((String) args[0]);
+			public Object run(Object[] pack){
+				return help((String) Packager.getArgs(pack)[0]);
 			}
 		};
 		
 		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
-			public Object run(Object[] args) {
-				return ping((Double) args[0]);
+			public Object run(Object[] pack) {
+				return ping((Double) Packager.getArgs(pack)[0]);
 			}
 		};
 		
 		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Object[] pack) {
 				return generateClientID();
 			}
 		};
@@ -80,7 +80,7 @@ public class GameManager {
 	protected String callFunction(String gsonPack) { 	//##### Work in progress #####
 		
 		Object[] packFromClient = GsonConverter.gsonToObjectArray(gsonPack);
-		Object[] packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), "Someting Failed, are you in the Lobby / do you hava a SessionID?", null, null);
+		Object[] packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), "Someting Failed, are you in the Lobby / do you hava a SessionID?", null, null, "", "");
 		
 		//if the player is in the lobby (then they have a sessionID)
 		for(Player p: lobby.players){
@@ -93,14 +93,14 @@ public class GameManager {
 		if(Packager.getPath(packFromClient).equalsIgnoreCase("joinLobby")){
 			for(String s: knownSessionIDs){
 				if(s.equals(Packager.getUserSessionID(packFromClient))){ //is a know sessionID
-					Object returnVal = game.runFunction(Packager.getPath(packFromClient), Packager.getArgs(packFromClient));
+					Object returnVal = game.runFunction(packFromClient);
 					packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), game.findFunction(Packager.getPath(packFromClient)).desc, returnVal, null);
 				}
 			}
 		}
 		//else if path matches '/getSessionID', return a user session id
 		if (Packager.getPath(packFromClient).equalsIgnoreCase("getSessionID")){
-			Object returnVal = game.runFunction(Packager.getPath(packFromClient), Packager.getArgs(packFromClient));
+			Object returnVal = game.runFunction(packFromClient);
 			packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), game.findFunction(Packager.getPath(packFromClient)).desc, returnVal, null);
 		}
 		

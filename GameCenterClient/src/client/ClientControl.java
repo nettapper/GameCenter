@@ -12,12 +12,11 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class ClientControl {
 		
 	public static final String IP_ADDRESS = "localhost";
-	public static final int PORT = 65534;
+	public static final int PORT = 65535;
 	public static final String ADDRESS = "http://" + IP_ADDRESS + ":" + PORT;
 	
 	protected String[] paths;
@@ -57,7 +56,7 @@ public class ClientControl {
 		connect("/ping", GsonConverter.objectArrayToGson(Packager.toStandardForm("/ping", new Long(System.currentTimeMillis()), myID)));
 		
 		while(! (Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/hasWinner", GsonConverter.objectArrayToGson(Packager.toStandardForm("/hasWinner", "Game Done??", myID)))))) {
-			if ((Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/canPlay", GsonConverter.objectArrayToGson(Packager.toStandardForm("/canPlay", "My Turn?", myID)))))) {
+			if ((Boolean) Packager.getReturnValue(GsonConverter.gsonToObjectArray(connect("/canPlay", GsonConverter.objectArrayToGson(Packager.toStandardForm("/canPlay", "X", myID)))))) {
 				connect("/placeAt", GsonConverter.objectArrayToGson(Packager.toStandardForm("/placeAt", new Object[] {0,0}, myID)));
 			}
 		}
