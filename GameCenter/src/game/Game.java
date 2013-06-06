@@ -1,5 +1,6 @@
 package game;
 
+import client.Pack;
 import client.Packager;
 
 public class Game extends Plugin {
@@ -15,30 +16,28 @@ public class Game extends Plugin {
 		
 		Function canPlay = new Function("canPlay", this) {
 			@Override
-			public Object run(Object[] pack) {
-				return canPlay(Packager.getGameID(pack));
+			public Object run(Pack pack) {
+				return canPlay(pack.getUserGameID());
 			}
 		};
 		
 		Function isAvailable = new Function("isAvailable", this) {
 			@Override
-			public Object run(Object[] pack) {
-				Object[] args = Packager.getArgs(pack);
-				return isAvailable((Integer) args[0], (Integer) args[1]);
+			public Object run(Pack pack) {
+				return isAvailable((Integer) pack.getArgAt(0), (Integer) pack.getArgAt(1));
 			}
 		};
 		
 		Function placeAt = new Function("placeAt", this) {
 			@Override
-			public Object run(Object[] pack) {
-				Object[] args = Packager.getArgs(pack);
-				return placeAt((String) args[0], (Integer) args[1], (Integer) args[2]);
+			public Object run(Pack pack) {
+				return placeAt((String) pack.getArgAt(0), (Integer) pack.getArgAt(1), (Integer) pack.getArgAt(2));
 			}
 		};
 		
 		Function hasWinner = new Function("hasWinner", this) {
 			@Override
-			public Object run(Object[] pack) {
+			public Object run(Pack pack) {
 				return hasWinner();
 			}
 		};

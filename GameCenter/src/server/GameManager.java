@@ -1,10 +1,13 @@
 package server;
 
+import game.Function;
+import game.Game;
+
 import java.util.ArrayList;
 
 import client.GsonConverter;
+import client.Pack;
 import client.Packager;
-import game.*;
 
 public class GameManager {
 	
@@ -31,28 +34,28 @@ public class GameManager {
 		
 		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
-			public Object run(Object[] pack) {
+			public ArrayList<Object> run(Pack pack) {
 				return getPaths();
 			}
 		};
 		
 		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
-			public Object run(Object[] pack){
-				return help((String) Packager.getArgs(pack)[0]);
+			public Object run(Pack pack){
+				return help((String) pack.getArgAt(0));
 			}
 		};
 		
 		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
-			public Object run(Object[] pack) {
-				return ping((Double) Packager.getArgs(pack)[0]);
+			public Object run(Pack pack) {
+				return ping((Double) pack.getArgAt(0));
 			}
 		};
 		
 		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
 			@Override
-			public Object run(Object[] pack) {
+			public Object run(Pack pack) {
 				return generateClientID();
 			}
 		};
@@ -61,8 +64,8 @@ public class GameManager {
 		
 		Function joinLobby = new Function("joinLobby", "Trys to join a game lobby", game) {
 			@Override
-			public Object run(Object[] args) {
-				return lobby.addPlayer((String) args[0]);
+			public Object run(Pack pack) {
+				return lobby.addPlayer(pack.getUserSessionID());
 			}
 		};
 		
@@ -79,46 +82,46 @@ public class GameManager {
 	 */
 	protected String callFunction(String gsonPack) { 	//##### Work in progress #####
 		
-		Object[] packFromClient = GsonConverter.gsonToObjectArray(gsonPack);
-		Object[] packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), "Someting Failed, are you in the Lobby / do you hava a SessionID?", null, null, "", "");
+		Pack pack = GsonConverter.gsonToPack(gsonPack);
+		pack.setDesc("Function call failed for some reason.");
 		
-		//if the player is in the lobby (then they have a sessionID)
+		String path = pack.getPath();
+		String userSessionID = pack.getUserSessionID();
+		
+		// call the function if the player is in the lobby
 		for(Player p: lobby.players){
-			if((p.sessionID).equals(Packager.getUserSessionID(packFromClient))) {
-				packToClient = lobby.callFunction(packFromClient);
-				return GsonConverter.objectArrayToGson(packToClient);
+			if(userSessionID.equals(p.userSessionID)) {
+				pack.setReturnValue(lobby.callFunction(pack));
 			}
 		}
-		//else if path matches '/joinLobby', add the user to the game lobby (must already have a sessionID)
-		if(Packager.getPath(packFromClient).equalsIgnoreCase("joinLobby")){
-			for(String s: knownSessionIDs){
-				if(s.equals(Packager.getUserSessionID(packFromClient))){ //is a know sessionID
-					Object returnVal = game.runFunction(packFromClient);
-					packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), game.findFunction(Packager.getPath(packFromClient)).desc, returnVal, null);
+		
+		// Add the user to the game lobby (must have a userSessionID)
+		if(path.equalsIgnoreCase("joinLobby")){
+			for(String id: knownSessionIDs){
+				if(userSessionID.equals(id)){ //is a know sessionID
+					pack.setReturnValue(game.runFunction(pack));
 				}
 			}
 		}
-		//else if path matches '/getSessionID', return a user session id
-		if (Packager.getPath(packFromClient).equalsIgnoreCase("getSessionID")){
-			Object returnVal = game.runFunction(packFromClient);
-			packToClient = Packager.toStandardForm(Packager.getPath(packFromClient), game.findFunction(Packager.getPath(packFromClient)).desc, returnVal, null);
+		// Returns a userSessionID
+		if (path.equalsIgnoreCase("getSessionID")){
+			pack.setReturnValue(game.runFunction(pack));
 		}
 		
-		//else return, need user session id / need to be in a lobby.. use the path'/genSessionID' and '/joinLobby'
-		return GsonConverter.objectArrayToGson(packToClient);
+		return GsonConverter.packToGson(pack);
 	}
 	
 	/**
 	 * Finds all the paths available in the game's function
 	 * 
-	 * @return String[] Returns the paths found
+	 * @return ArrayList Returns the paths found
 	 */
-	protected String[] getPaths() {
+	protected ArrayList<Object> getPaths() {
 		
-		String[] paths = new String[game.functions.size()];
+		ArrayList<Object> paths = new ArrayList<Object>();
 		
-		for(int i = 0; i < game.functions.size(); i++) {
-			paths[i] = "/" + game.functions.get(i).name;
+		for(Function function : game.functions) {
+			paths.add("/" + function.name);
 		}
 		
 		return paths;
@@ -130,11 +133,15 @@ public class GameManager {
 	 * 
 	 * @return
 	 */
-	protected String help(String path) {
+	protected ArrayList<Object> help(String path) {
+		ArrayList<Object> returnValue = new ArrayList<Object>();
+		
 		if(path.substring(0, 1).equalsIgnoreCase("/")){
 			path = path.substring(1);
 		}
-		return (game.findFunction(path)).desc;
+		returnValue.add(game.findFunction(path).desc);
+		
+		return returnValue;
 	}
 	
 	/**
@@ -143,9 +150,12 @@ public class GameManager {
 	 * 
 	 * @return
 	 */
-	protected Double ping(Double receiveTime) {
+	protected ArrayList<Object> ping(Double receiveTime) {
+		ArrayList<Object> returnValue = new ArrayList<Object>();
+		returnValue.add(System.currentTimeMillis() - receiveTime);
+		returnValue.add("pong");
 		
-		return System.currentTimeMillis() - receiveTime;
+		return returnValue;
 	}
 	
 	/**

@@ -2,12 +2,12 @@ package server;
 
 public class Player {
 	
-	protected String sessionID;
-	protected String gameID;
+	protected String userSessionID;
+	protected String userGameID;
 	
-	public Player(String sessionID, String gameID) {
+	public Player(String userSessionID, String userGameID) {
 		
-		this.sessionID = sessionID;
-		this.gameID = gameID;
+		this.userSessionID = userSessionID;
+		this.userGameID = userGameID;
 	}
 }

@@ -13,6 +13,10 @@ public class Pack {
 	private String userSessionID;
 	private String userGameID;
 	
+	public Pack(String path, String userSessionID) {
+		this(path, "", new ArrayList<Object>(), new ArrayList<Object>(), userSessionID, "");
+	}
+	
 	public Pack(String path, ArrayList<Object> args, String userSessionID) {
 		this(path, "", args, new ArrayList<Object>(), userSessionID, "");
 	}
@@ -26,6 +30,17 @@ public class Pack {
 		
 		this.userSessionID = userSessionID;
 		this.userGameID = userGameID;
+	}
+	
+	public void clear() {
+		path = "";
+		desc = "";
+		
+		args = new ArrayList<Object>();
+		returnValue = new ArrayList<Object>();
+		
+		userSessionID = "";
+		userGameID = "";
 	}
 	
 	public String getPath() {
@@ -60,12 +75,17 @@ public class Pack {
 		args.add(index, arg);
 	}
 	
-	public ArrayList<Object> getReturnValues() {
+	public ArrayList<Object> getReturnValue() {
 		return returnValue;
 	}
 	
-	public void setReturnValues(ArrayList<Object> returnValue) {
-		this.returnValue = returnValue;
+	public void setReturnValue(Object val) {
+		
+		if(val instanceof ArrayList) {
+			this.returnValue = (ArrayList<Object>) val;
+		} else {
+			this.returnValue.add(val);
+		}
 	}
 	
 	public Object getReturnValueAt(int index) {
@@ -90,5 +110,9 @@ public class Pack {
 	
 	public void setUserGameID(String id) {
 		this.userGameID = id;
+	}
+	
+	public String toString() {
+		return userSessionID + " -  Path: " + path;
 	}
 }
