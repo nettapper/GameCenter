@@ -25,25 +25,24 @@ public class ClientControl {
 	
 	public ClientControl() {
 		
-		Pack clientPack = new Pack("getSessionID", "");
-		System.out.println(clientPack);
+		Pack clientPack = new Pack("/getSessionID", "");
 		
-		String gsonServerPack = connect("/getSessionID", clientPack);
+		String gsonServerPack = connect(clientPack);
 		Pack serverPack = GsonConverter.gsonToPack(gsonServerPack);
 		
 		this.userSessionID = (String) serverPack.getReturnValueAt(0);
 		
 		clientPack.clear();
-		clientPack.setPath("joinLobby");
+		clientPack.setPath("/joinLobby");
 		clientPack.setUserSessionID(userSessionID);
 		
-		connect("/joinLobby", clientPack);
+		connect(clientPack);
 		
 		clientPack.clear();
-		clientPack.setPath("getPaths");
+		clientPack.setPath("/getPaths");
 		clientPack.setUserSessionID(userSessionID);
 		
-		gsonServerPack = connect("/getPaths", clientPack);
+		gsonServerPack = connect(clientPack);
 		serverPack = GsonConverter.gsonToPack(gsonServerPack);
 		
 		if (serverPack != null) {
@@ -65,43 +64,43 @@ public class ClientControl {
 		// DEBUGGING //	
 		
 		clientPack.clear();
-		clientPack.setPath("help");
+		clientPack.setPath("/help");
 		clientPack.setUserSessionID(userSessionID);
 		
-		connect("/help", clientPack);
+		connect(clientPack);
 		
 		clientPack.clear();
-		clientPack.setPath("help");
+		clientPack.setPath("/ping");
 		clientPack.setUserSessionID(userSessionID);
 		clientPack.setArgAt(0, System.currentTimeMillis());
 		
-		connect("/ping", clientPack);
+		connect(clientPack);
 		
 		// Testing with our tictactoe game
 		clientPack.clear();
-		clientPack.setPath("hasWinner");
+		clientPack.setPath("/hasWinner");
 		clientPack.setUserSessionID(userSessionID);
 		
-		gsonServerPack = connect("/hasWinner", clientPack);
+		gsonServerPack = connect(clientPack);
 		serverPack = GsonConverter.gsonToPack(gsonServerPack);
 		
 		while(!(Boolean) serverPack.getReturnValueAt(0)) {
 			clientPack.clear();
-			clientPack.setPath("canPlay");
+			clientPack.setPath("/canPlay");
 			clientPack.setUserSessionID(userSessionID);
 			
-			gsonServerPack = connect("/canPlay", clientPack);
+			gsonServerPack = connect(clientPack);
 			serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			
 			if ((Boolean) serverPack.getReturnValueAt(0)) {
 				
 				clientPack.clear();
-				clientPack.setPath("placeAt");
+				clientPack.setPath("/placeAt");
 				clientPack.setUserSessionID(userSessionID);
 				clientPack.setArgAt(0, 0);
 				clientPack.setArgAt(1, 0);
 				
-				gsonServerPack = connect("/placeAt", clientPack);
+				gsonServerPack = connect(clientPack);
 				serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			}
 		}
@@ -117,9 +116,9 @@ public class ClientControl {
 	 * 
 	 * @return String The data from the server
 	 */
-	public static String connect(String path, Pack clientPack) {
+	public static String connect(Pack clientPack) {
 		
-		return connect(path, GsonConverter.packToGson(clientPack));
+		return connect(clientPack.getPath(), GsonConverter.packToGson(clientPack));
 	}
 	
 	/**
@@ -164,14 +163,16 @@ public class ClientControl {
 			    input.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				data = ""; //in the case of an exception, data will not be 1/2 complete (always all or nothing)
+				data = gsonClientPack; //in the case of an exception, return the original pack
 			}
 		    
 		    connection.disconnect();
 		    
 		    System.out.println("Client succesfully connected to   : " + ADDRESS + path); // Debugging
 		    
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// DEBUGGING //
 		
