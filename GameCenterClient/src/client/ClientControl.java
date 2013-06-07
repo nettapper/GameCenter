@@ -66,6 +66,7 @@ public class ClientControl {
 		clientPack.clear();
 		clientPack.setPath("/help");
 		clientPack.setUserSessionID(userSessionID);
+		clientPack.setArgAt(0, "/ping");
 		
 		connect(clientPack);
 		

@@ -136,8 +136,8 @@ public class GameManager {
 	protected ArrayList<Object> help(String path) {
 		ArrayList<Object> returnValue = new ArrayList<Object>();
 		
-		if(path.substring(0, 1).equalsIgnoreCase("/")){
-			path = path.substring(1);
+		if(!(path.substring(0, 1).equalsIgnoreCase("/"))){
+			path = "/"+path;
 		}
 		returnValue.add(game.findFunction(path).desc);
 		
