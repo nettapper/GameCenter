@@ -1,7 +1,11 @@
 package game;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import client.Pack;
-import client.Packager;
 
 public class Game extends Plugin {
 	
@@ -10,6 +14,12 @@ public class Game extends Plugin {
 	private String[][] board =  {{" ", " ", " "},
 								 {" ", " ", " "},
 								 {" ", " ", " "}};
+	
+	// TESTING //
+	
+	File print = new File("C:/Users/Calvin/Desktop/tictactoe.txt");
+	
+	// END //
 	
 	public Game() {
 		super();
@@ -72,11 +82,9 @@ public class Game extends Plugin {
 	}
 	
 	private boolean placeAt(String gameID, double x, double y) {
-		System.out.println("CALLED");
-		if(canPlay(gameID) && isAvailable(x, y)) {
+		if(canPlay(gameID) && isAvailable(x, y) && !hasWinner()) {
 			board[(int) y][(int) x] = gameID;
 			nextPlayersTurn();
-			
 			toString();
 			
 			return true;
@@ -189,15 +197,27 @@ public class Game extends Plugin {
 	}
 	
 	public String toString() {
-		String ret = "{";
-		for(int y = 0; y < board.length; y++) {
-			ret += " {";
-			for(int x = 0; x < board[0].length; x++) {
-				ret += board[y][x] + ",";
+		try {
+			FileWriter writer = new FileWriter("C:/Users/Calvin/Desktop/tictactoe.txt");
+			PrintWriter printer = new PrintWriter(writer);
+			
+			for(int y = 0; y < board.length; y++) {
+				printer.print("| ");
+				for(int x = 0; x < board[0].length; x++) {
+					printer.print(board[y][x]);
+					if(x < board[0].length - 1) {
+						printer.print(" | ");
+					}
+				}
+				printer.print(" |");
+				printer.println("");
 			}
-			ret += "}, ";
+			
+			printer.close();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		ret += "}";
-		return ret;
+		return "";
 	}
 }

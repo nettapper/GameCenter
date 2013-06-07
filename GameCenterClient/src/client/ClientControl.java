@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientControl {
 		
@@ -70,27 +71,35 @@ public class ClientControl {
 		//connect(clientPack);
 		
 		// Testing with our tictactoe game
-		clientPack = new Pack("/hasWinner", userSessionID);
+		Scanner input = new Scanner(System.in);
+		int x = 0;
+		int y = 0;
 		
-		gsonServerPack = connect(clientPack);
-		serverPack = GsonConverter.gsonToPack(gsonServerPack);
-		
-		while(!(Boolean) serverPack.getReturnValueAt(0)) {
+		do {
 			clientPack = new Pack("/canPlay", userSessionID);
 			
 			gsonServerPack = connect(clientPack);
 			serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			
-			if ((Boolean) serverPack.getReturnValueAt(0)) {
-				
+			System.out.print("\nPlace at values: ");
+			x = input.nextInt();
+			y = input.nextInt();
+			System.out.println();
+			
+			if (true) {//(Boolean) serverPack.getReturnValueAt(0)) {
 				clientPack = new Pack("/placeAt", userSessionID);
-				clientPack.setArgAt(0, 0);
-				clientPack.setArgAt(1, 0);
+				clientPack.setArgAt(0, x);
+				clientPack.setArgAt(1, y);
 				
 				gsonServerPack = connect(clientPack);
 				serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			}
-		}
+			
+			clientPack = new Pack("/hasWinner", userSessionID);
+			
+			gsonServerPack = connect(clientPack);
+			serverPack = GsonConverter.gsonToPack(gsonServerPack);
+		} while(!(Boolean) serverPack.getReturnValueAt(0));
 		// end of testing with the tictactoe game
 		// END //
 	}
