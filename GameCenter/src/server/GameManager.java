@@ -92,6 +92,7 @@ public class GameManager {
 		for(Player p: lobby.players){
 			if(userSessionID.equals(p.userSessionID)) {
 				pack.setReturnValue(lobby.callFunction(pack));
+				pack.setDesc((game.findFunction(pack.getPath()).desc));
 			}
 		}
 		
@@ -100,12 +101,14 @@ public class GameManager {
 			for(String id: knownSessionIDs){
 				if(userSessionID.equals(id)){ //is a know sessionID
 					pack.setReturnValue(game.runFunction(pack));
+					pack.setDesc((game.findFunction(pack.getPath()).desc));
 				}
 			}
 		}
 		// Returns a userSessionID
 		if (path.equalsIgnoreCase("/getSessionID")){
 			pack.setReturnValue(game.runFunction(pack));
+			pack.setDesc((game.findFunction(pack.getPath()).desc));
 		}
 		
 		return GsonConverter.packToGson(pack);
