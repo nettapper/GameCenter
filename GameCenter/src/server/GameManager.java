@@ -134,11 +134,10 @@ public class GameManager {
 	 * @return
 	 */
 	protected ArrayList<Object> help(String path) {
+		System.out.println(path);
+		
 		ArrayList<Object> returnValue = new ArrayList<Object>();
 		
-		if(path.substring(0, 1).equalsIgnoreCase("/")){
-			path = path.substring(1);
-		}
 		returnValue.add(game.findFunction(path).desc);
 		
 		return returnValue;

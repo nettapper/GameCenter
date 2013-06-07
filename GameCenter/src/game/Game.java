@@ -24,14 +24,14 @@ public class Game extends Plugin {
 		Function isAvailable = new Function("/isAvailable", this) {
 			@Override
 			public Object run(Pack pack) {
-				return isAvailable((Integer) pack.getArgAt(0), (Integer) pack.getArgAt(1));
+				return isAvailable((Double) pack.getArgAt(0), (Double) pack.getArgAt(1));
 			}
 		};
 		
 		Function placeAt = new Function("/placeAt", this) {
 			@Override
 			public Object run(Pack pack) {
-				return placeAt((String) pack.getArgAt(0), (Integer) pack.getArgAt(1), (Integer) pack.getArgAt(2));
+				return placeAt(pack.getUserGameID(), (Double) pack.getArgAt(0), (Double) pack.getArgAt(1));
 			}
 		};
 		
@@ -56,7 +56,6 @@ public class Game extends Plugin {
 	}
 	
 	private boolean canPlay(String gameID) {
-		System.out.println(gameID);
 		if(getTurn().equalsIgnoreCase(gameID)) {
 			return true;
 		} else {
@@ -64,17 +63,18 @@ public class Game extends Plugin {
 		}
 	}
 	
-	private boolean isAvailable(int x, int y) {
-		if(board[y][x].equals(" ")) {
+	private boolean isAvailable(double x, double y) {
+		if(board[(int) y][(int) x].equals(" ")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private boolean placeAt(String gameID, int x, int y) {
+	private boolean placeAt(String gameID, double x, double y) {
+		System.out.println("CALLED");
 		if(canPlay(gameID) && isAvailable(x, y)) {
-			board[y][x] = gameID;
+			board[(int) y][(int) x] = gameID;
 			nextPlayersTurn();
 			
 			toString();

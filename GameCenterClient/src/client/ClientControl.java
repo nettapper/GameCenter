@@ -32,15 +32,11 @@ public class ClientControl {
 		
 		this.userSessionID = (String) serverPack.getReturnValueAt(0);
 		
-		clientPack.clear();
-		clientPack.setPath("/joinLobby");
-		clientPack.setUserSessionID(userSessionID);
+		clientPack = new Pack("/joinLobby", userSessionID);
 		
 		connect(clientPack);
 		
-		clientPack.clear();
-		clientPack.setPath("/getPaths");
-		clientPack.setUserSessionID(userSessionID);
+		clientPack = new Pack("/getPaths", userSessionID);
 		
 		gsonServerPack = connect(clientPack);
 		serverPack = GsonConverter.gsonToPack(gsonServerPack);
@@ -63,40 +59,31 @@ public class ClientControl {
 		
 		// DEBUGGING //	
 		
-		clientPack.clear();
-		clientPack.setPath("/help");
-		clientPack.setUserSessionID(userSessionID);
+		clientPack = new Pack("/help", userSessionID);
+		clientPack.setArgAt(0, "/ping");
 		
-		connect(clientPack);
+		//connect(clientPack);
 		
-		clientPack.clear();
-		clientPack.setPath("/ping");
-		clientPack.setUserSessionID(userSessionID);
+		clientPack = new Pack("/ping", userSessionID);
 		clientPack.setArgAt(0, System.currentTimeMillis());
 		
-		connect(clientPack);
+		//connect(clientPack);
 		
 		// Testing with our tictactoe game
-		clientPack.clear();
-		clientPack.setPath("/hasWinner");
-		clientPack.setUserSessionID(userSessionID);
+		clientPack = new Pack("/hasWinner", userSessionID);
 		
 		gsonServerPack = connect(clientPack);
 		serverPack = GsonConverter.gsonToPack(gsonServerPack);
 		
 		while(!(Boolean) serverPack.getReturnValueAt(0)) {
-			clientPack.clear();
-			clientPack.setPath("/canPlay");
-			clientPack.setUserSessionID(userSessionID);
+			clientPack = new Pack("/canPlay", userSessionID);
 			
 			gsonServerPack = connect(clientPack);
 			serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			
 			if ((Boolean) serverPack.getReturnValueAt(0)) {
 				
-				clientPack.clear();
-				clientPack.setPath("/placeAt");
-				clientPack.setUserSessionID(userSessionID);
+				clientPack = new Pack("/placeAt", userSessionID);
 				clientPack.setArgAt(0, 0);
 				clientPack.setArgAt(1, 0);
 				

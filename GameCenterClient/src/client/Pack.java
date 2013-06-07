@@ -36,8 +36,8 @@ public class Pack {
 		path = "";
 		desc = "";
 		
-		args = new ArrayList<Object>();
-		returnValue = new ArrayList<Object>();
+		clearArgs();
+		clearReturnValue();
 		
 		userSessionID = "";
 		userGameID = "";
@@ -79,6 +79,10 @@ public class Pack {
 		return returnValue;
 	}
 	
+	public void clearArgs() {
+		args.clear();
+	}
+	
 	public void setReturnValue(Object val) {
 		
 		if(val instanceof ArrayList) {
@@ -94,6 +98,10 @@ public class Pack {
 	
 	public void setReturnValueAt(int index, Object val) {
 		returnValue.add(index, val);
+	}
+	
+	public void clearReturnValue() {
+		returnValue.clear();
 	}
 	
 	public String getUserSessionID() {
