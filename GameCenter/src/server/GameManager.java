@@ -32,28 +32,28 @@ public class GameManager {
 		
 		// Add the default functions (aka. Paths) to the game
 		
-		Function getPaths = new Function("getPaths", "Returns all of the valid paths that the server handles", game) {
+		Function getPaths = new Function("/getPaths", "Returns all of the valid paths that the server handles", game) {
 			@Override
 			public ArrayList<Object> run(Pack pack) {
 				return getPaths();
 			}
 		};
 		
-		Function help = new Function("help", "Returns the descrption of the specified path in arg[0]", game) {
+		Function help = new Function("/help", "Returns the descrption of the specified path in arg[0]", game) {
 			@Override
 			public Object run(Pack pack){
 				return help((String) pack.getArgAt(0));
 			}
 		};
 		
-		Function ping = new Function("ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
+		Function ping = new Function("/ping", "Takes the Java System.currentTimeMillis() minus the time given in arg[0] and returns it", game) {
 			@Override
 			public Object run(Pack pack) {
 				return ping((Double) pack.getArgAt(0));
 			}
 		};
 		
-		Function getSessionID = new Function("getSessionID", "Generates a random ID if the client does not already have one", game) {
+		Function getSessionID = new Function("/getSessionID", "Generates a random ID if the client does not already have one", game) {
 			@Override
 			public Object run(Pack pack) {
 				return generateClientID();
@@ -62,7 +62,7 @@ public class GameManager {
 		
 		// TESTING //
 		
-		Function joinLobby = new Function("joinLobby", "Trys to join a game lobby", game) {
+		Function joinLobby = new Function("/joinLobby", "Trys to join a game lobby", game) {
 			@Override
 			public Object run(Pack pack) {
 				return lobby.addPlayer(pack.getUserSessionID());
@@ -96,7 +96,7 @@ public class GameManager {
 		}
 		
 		// Add the user to the game lobby (must have a userSessionID)
-		if(path.equalsIgnoreCase("joinLobby")){
+		if(path.equalsIgnoreCase("/joinLobby")){
 			for(String id: knownSessionIDs){
 				if(userSessionID.equals(id)){ //is a know sessionID
 					pack.setReturnValue(game.runFunction(pack));
@@ -104,7 +104,7 @@ public class GameManager {
 			}
 		}
 		// Returns a userSessionID
-		if (path.equalsIgnoreCase("getSessionID")){
+		if (path.equalsIgnoreCase("/getSessionID")){
 			pack.setReturnValue(game.runFunction(pack));
 		}
 		
@@ -121,7 +121,7 @@ public class GameManager {
 		ArrayList<Object> paths = new ArrayList<Object>();
 		
 		for(Function function : game.functions) {
-			paths.add("/" + function.name);
+			paths.add(function.name);
 		}
 		
 		return paths;

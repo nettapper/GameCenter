@@ -14,28 +14,28 @@ public class Game extends Plugin {
 	public Game() {
 		super();
 		
-		Function canPlay = new Function("canPlay", this) {
+		Function canPlay = new Function("/canPlay", this) {
 			@Override
 			public Object run(Pack pack) {
 				return canPlay(pack.getUserGameID());
 			}
 		};
 		
-		Function isAvailable = new Function("isAvailable", this) {
+		Function isAvailable = new Function("/isAvailable", this) {
 			@Override
 			public Object run(Pack pack) {
 				return isAvailable((Integer) pack.getArgAt(0), (Integer) pack.getArgAt(1));
 			}
 		};
 		
-		Function placeAt = new Function("placeAt", this) {
+		Function placeAt = new Function("/placeAt", this) {
 			@Override
 			public Object run(Pack pack) {
 				return placeAt((String) pack.getArgAt(0), (Integer) pack.getArgAt(1), (Integer) pack.getArgAt(2));
 			}
 		};
 		
-		Function hasWinner = new Function("hasWinner", this) {
+		Function hasWinner = new Function("/hasWinner", this) {
 			@Override
 			public Object run(Pack pack) {
 				return hasWinner();
