@@ -33,7 +33,7 @@ public class ClientManager implements HttpHandler {
 			HttpServer server = HttpServer.create(new InetSocketAddress(controller.PORT), 0);
 			
 			for(String path : this.paths) {
-				server.createContext(path);
+				server.createContext(path, this);
 			}
 
 			server.setExecutor(null);
