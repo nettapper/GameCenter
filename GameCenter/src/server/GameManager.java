@@ -111,6 +111,8 @@ public class GameManager {
 			pack.setDesc((game.findFunction(pack.getPath()).desc));
 		}
 		
+		pack.setUserGameID("");
+		
 		return GsonConverter.packToGson(pack);
 	}
 	
