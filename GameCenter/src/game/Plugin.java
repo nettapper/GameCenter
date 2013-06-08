@@ -2,6 +2,9 @@ package game;
 
 import java.util.ArrayList;
 
+import client.Pack;
+import client.Packager;
+
 public abstract class Plugin {
 	
 	public ArrayList<Function> functions;
@@ -28,32 +31,34 @@ public abstract class Plugin {
 		return null;
 	}
 	
-	public Object runFunction(String name, Object[] args) {
+	public Object runFunction(Pack pack) {
 		
-		for(Function f : functions) {
-			if(f.name.equalsIgnoreCase(name)) {
-				return f.run(args);
-			}
+		Function func = findFunction(pack.getPath());
+		if(func != null) {
+			return func.run(pack);
 		}
 		return null;
 	}
 	
 	public void addFunction(Function newFunc) {
 		
-		for(Function f : functions) {
-			if(f.name.equalsIgnoreCase(newFunc.name)) return;
+		if(findFunction(newFunc.name) == null) {
+			functions.add(newFunc);
 		}
-		functions.add(newFunc);
 	}
 	
 	public void removeFunction(Function oldFunc) {
 		
-		if(functions.contains(oldFunc))	functions.remove(oldFunc);
+		if(functions.contains(oldFunc))	{
+			functions.remove(oldFunc);
+		}
 	}
 	
 	public void removeFunction(int index) {
 		
-		if(index >= 0 && index < functions.size()) functions.remove(index);
+		if(index >= 0 && index < functions.size()) {
+			functions.remove(index);
+		}
 	}
 	
 	public ArrayList<String> getGameIDs() {

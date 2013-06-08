@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+
+import client.GsonConverter;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -12,21 +15,25 @@ import com.sun.net.httpserver.HttpServer;
 public class ClientManager implements HttpHandler {
 
 	protected ServerControl controller;
-	protected String[] paths;
+	protected ArrayList<String> paths;
 
-	protected ClientManager(ServerControl controller, String[] paths) {
+	protected ClientManager(ServerControl controller, ArrayList<Object> paths) {
 		
 		this.controller = controller;
-		this.paths = paths;
+		this.paths = new ArrayList<String>();
+		
+		for(Object path : paths) {
+			this.paths.add((String) path);
+		}
 		
 		System.out.println("Server attempting to open port: " + controller.PORT); // Debugging
 		
 		// Attempt to initiate a server
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(controller.PORT), 0);
-
-			for (int i = 0; i < paths.length; i++) {
-				server.createContext(paths[i], this);
+			
+			for(String path : this.paths) {
+				server.createContext(path, this);
 			}
 
 			server.setExecutor(null);
@@ -55,13 +62,13 @@ public class ClientManager implements HttpHandler {
 	 */
 	protected String update(String path, String gsonPack) {
 		
-		for (int i = 0; i < paths.length; i++) {
-			if (path.equalsIgnoreCase(paths[i])) {
+		for(String comparePath : paths) {
+			if(path.equalsIgnoreCase(comparePath)) {
 				return controller.gamemanager.callFunction(gsonPack);
 			}
 		}
-
-		return path + " is not proper.";
+		
+		return gsonPack;
 	}
 	
 	/**

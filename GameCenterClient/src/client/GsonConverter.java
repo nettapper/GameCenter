@@ -7,55 +7,30 @@ public class GsonConverter {
 	private static Gson gson = new Gson();
 	
 	/**
-	 * Converts Object[] to a json formated String
+	 * Converts a Pack to a json formated String
 	 * 
 	 * @param array To be converted
 	 * 
-	 * @return String In the from of json
+	 * @return String In the form of json
 	 */
-	public static String objectArrayToGson(Object[] array) {
+	public static String packToGson(Pack pack) {
 		
-		return gson.toJson(array);
+		return gson.toJson(pack);
 		
 	}
 	
 	/**
-	 * Converts String[] to a json formated String
+	 * Converts json formated String back to an Pack object
 	 * 
-	 * @param array String array to be converted
-	 * 
-	 * @return String In the from of json
-	 */
-	public static String stringArrayToGson(String[] array) {
-		
-		return gson.toJson(array);
-		
-	}
-	
-	/**
-	 * Converts json formated String back to an Object[]
-	 * 
-	 * Note, in Java, an array in the returned Object[] will be an ArrayList
+	 * Note, in Java, an array in the returned Pack will be an ArrayList
 	 * 
 	 * @param gsonString To be converted
 	 * 
-	 * @return Object[] all of type object
+	 * @return Pack all of type object
 	 */
-	public static Object[] gsonToObjectArray(String gsonString) {
+	public static Pack gsonToPack(String gsonString) {
 		
-		return gson.fromJson(gsonString, Object[].class);
-		
-	}
-	/**
-	 * Converts json formated String back to an String[]
-	 * 
-	 * @param gsonString To be converted
-	 * 
-	 * @return String[] converted back
-	 */
-	public static String[] gsonToStringArray(String gsonString) {
-		
-		return gson.fromJson(gsonString, String[].class);
+		return gson.fromJson(gsonString, Pack.class);
 		
 	}
 }

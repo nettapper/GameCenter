@@ -1,5 +1,12 @@
 package game;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import client.Pack;
+
 public class Game extends Plugin {
 	
 	private int playersTurn;
@@ -8,33 +15,41 @@ public class Game extends Plugin {
 								 {" ", " ", " "},
 								 {" ", " ", " "}};
 	
+	// TESTING //
+	String filePath = "/home/linuxmint/Github/GameCenter/tictactoe.txt";
+	//String filePath = "C:/Users/Calvin/Desktop/tictactoe.txt";
+	
+	File print = new File(filePath);
+	
+	// END //
+	
 	public Game() {
 		super();
 		
-		Function canPlay = new Function("canPlay", this) {
+		Function canPlay = new Function("/canPlay", this) {
 			@Override
-			public Object run(Object[] args) {
-				return canPlay((String) args[0]);
+			public Object run(Pack pack) {
+				return canPlay(pack.getUserGameID());
 			}
 		};
 		
-		Function isAvailable = new Function("isAvailable", this) {
+		Function isAvailable = new Function("/isAvailable", this) {
 			@Override
-			public Object run(Object[] args) {
-				return isAvailable((Integer) args[0], (Integer) args[1]);
+			public Object run(Pack pack) {
+				return isAvailable((Double) pack.getArgAt(0), (Double) pack.getArgAt(1));
 			}
 		};
 		
-		Function placeAt = new Function("placeAt", this) {
+		Function placeAt = new Function("/placeAt", this) {
 			@Override
-			public Object run(Object[] args) {
-				return placeAt((String) args[0], (Integer) args[1], (Integer) args[2]);
+			public Object run(Pack pack) {
+				return placeAt(pack.getUserGameID(), (Double) pack.getArgAt(0), (Double) pack.getArgAt(1));
 			}
 		};
 		
-		Function hasWinner = new Function("hasWinner", this) {
+		Function hasWinner = new Function("/hasWinner", this) {
 			@Override
-			public Object run(Object[] args) {
+			public Object run(Pack pack) {
 				return hasWinner();
 			}
 		};
@@ -53,7 +68,6 @@ public class Game extends Plugin {
 	}
 	
 	private boolean canPlay(String gameID) {
-		System.out.println(gameID);
 		if(getTurn().equalsIgnoreCase(gameID)) {
 			return true;
 		} else {
@@ -61,19 +75,18 @@ public class Game extends Plugin {
 		}
 	}
 	
-	private boolean isAvailable(int x, int y) {
-		if(board[y][x].equals(" ")) {
+	private boolean isAvailable(double x, double y) {
+		if(board[(int) y][(int) x].equals(" ")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private boolean placeAt(String gameID, int x, int y) {
-		if(canPlay(gameID) && isAvailable(x, y)) {
-			board[y][x] = gameID;
+	private boolean placeAt(String gameID, double x, double y) {
+		if(canPlay(gameID) && isAvailable(x, y) && !hasWinner()) {
+			board[(int) y][(int) x] = gameID;
 			nextPlayersTurn();
-			
 			toString();
 			
 			return true;
@@ -186,15 +199,27 @@ public class Game extends Plugin {
 	}
 	
 	public String toString() {
-		String ret = "{";
-		for(int y = 0; y < board.length; y++) {
-			ret += " {";
-			for(int x = 0; x < board[0].length; x++) {
-				ret += board[y][x] + ",";
+		try {
+			FileWriter writer = new FileWriter(filePath);
+			PrintWriter printer = new PrintWriter(writer);
+			
+			for(int y = 0; y < board.length; y++) {
+				printer.print("| ");
+				for(int x = 0; x < board[0].length; x++) {
+					printer.print(board[y][x]);
+					if(x < board[0].length - 1) {
+						printer.print(" | ");
+					}
+				}
+				printer.print(" |");
+				printer.println("");
 			}
-			ret += "}, ";
+			
+			printer.close();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		ret += "}";
-		return ret;
+		return "";
 	}
 }

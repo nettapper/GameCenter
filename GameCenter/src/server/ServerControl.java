@@ -11,7 +11,7 @@ package server;
 
 public class ServerControl {
 	
-	protected static final int PORT = 65534;
+	protected static final int PORT = 65535;
 	
 	protected DatabaseManager databasemanager;
 	protected ClientManager clientmanager;

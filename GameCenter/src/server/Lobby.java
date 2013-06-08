@@ -4,6 +4,7 @@ import game.Game;
 
 import java.util.ArrayList;
 
+import client.Pack;
 import client.Packager;
 
 /*
@@ -26,15 +27,24 @@ public class Lobby {
 		this.players = new ArrayList<Player>();
 	}
 	
-	protected Object[] callFunction(Object[] pack) {
+	protected Object callFunction(Pack pack) {
 		
-		Object returnVal = game.runFunction(Packager.getPath(pack), Packager.getArgs(pack));
+		String userSessionID = pack.getUserSessionID();
+		String userGameID = "";
 		
-		return Packager.toStandardForm(Packager.getPath(pack), game.findFunction(Packager.getPath(pack)).desc, returnVal, null);
+		for(Player p : players) {
+			if(userSessionID.equalsIgnoreCase(p.userSessionID)) {
+				userGameID = p.userGameID;
+			}
+		}
+		
+		pack.setUserGameID(userGameID);
+		
+		return game.runFunction(pack);
 	}
 	
 	
-	protected boolean addPlayer(String sessionID) {
+	protected boolean addPlayer(String userSessionID) {
 		
 		// Check if the game has not exceeded max amount of players
 		if(availableGameIDs.size() <= 0) {
@@ -43,13 +53,13 @@ public class Lobby {
 		
 		// Check if the player is in the lobby already
 		for(Player p : players) {
-			if(p.sessionID.equals(sessionID)) {
+			if(userSessionID.equals(p.userSessionID)) {
 				return false;
 			}
 		}
 		
 		// Assigns a gameID to the player with a sessionID
-		Player p = new Player(sessionID, availableGameIDs.get(0));
+		Player p = new Player(userSessionID, availableGameIDs.get(0));
 		availableGameIDs.remove(0);
 		
 		// Add player to the game

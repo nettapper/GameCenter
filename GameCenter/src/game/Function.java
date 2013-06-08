@@ -1,5 +1,9 @@
 package game;
 
+import java.util.ArrayList;
+
+import client.Pack;
+
 public class Function {
 	public String name;
 	public String desc;
@@ -16,7 +20,7 @@ public class Function {
 		plugin.addFunction(this);
 	}
 	
-	public Object run(Object[] args) {
+	public Object run(Pack pack) {
 		
 		return null;
 	}
