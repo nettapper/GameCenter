@@ -16,8 +16,10 @@ public class Game extends Plugin {
 								 {" ", " ", " "}};
 	
 	// TESTING //
+	String filePath = "/home/linuxmint/Github/GameCenter/tictactoe.txt";
+	//String filePath = "C:/Users/Calvin/Desktop/tictactoe.txt";
 	
-	File print = new File("C:/Users/Calvin/Desktop/tictactoe.txt");
+	File print = new File(filePath);
 	
 	// END //
 	
@@ -198,7 +200,7 @@ public class Game extends Plugin {
 	
 	public String toString() {
 		try {
-			FileWriter writer = new FileWriter("C:/Users/Calvin/Desktop/tictactoe.txt");
+			FileWriter writer = new FileWriter(filePath);
 			PrintWriter printer = new PrintWriter(writer);
 			
 			for(int y = 0; y < board.length; y++) {
