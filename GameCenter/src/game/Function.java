@@ -1,20 +1,26 @@
 package game;
 
+import java.util.ArrayList;
+
+import client.Pack;
+
 public class Function {
 	public String name;
 	public String desc;
 	
-	public Function(String name, Game game) {
-		this(name, "", game);
+	public Function(String name, Plugin plugin) {
+		
+		this(name, "", plugin);
 	}
 	
-	public Function(String name, String desc, Game game) {
+	public Function(String name, String desc, Plugin plugin) {
+		
 		this.name = name;
 		this.desc = desc;
-		game.addFunction(this);
+		plugin.addFunction(this);
 	}
 	
-	public Object run(Object args) {
+	public Object run(Pack pack) {
 		
 		return null;
 	}

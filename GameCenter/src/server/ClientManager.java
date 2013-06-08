@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+
+import client.GsonConverter;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -12,21 +15,25 @@ import com.sun.net.httpserver.HttpServer;
 public class ClientManager implements HttpHandler {
 
 	protected ServerControl controller;
-	protected String[] paths;
+	protected ArrayList<String> paths;
 
-	protected ClientManager(ServerControl controller, String[] paths) {
+	protected ClientManager(ServerControl controller, ArrayList<Object> paths) {
 		
 		this.controller = controller;
-		this.paths = paths;
+		this.paths = new ArrayList<String>();
+		
+		for(Object path : paths) {
+			this.paths.add((String) path);
+		}
 		
 		System.out.println("Server attempting to open port: " + controller.PORT); // Debugging
 		
 		// Attempt to initiate a server
 		try {
 			HttpServer server = HttpServer.create(new InetSocketAddress(controller.PORT), 0);
-
-			for (int i = 0; i < paths.length; i++) {
-				server.createContext(paths[i], this);
+			
+			for(String path : this.paths) {
+				server.createContext(path, this);
 			}
 
 			server.setExecutor(null);
@@ -49,19 +56,19 @@ public class ClientManager implements HttpHandler {
 	 * 
 	 * @param path The path used to find and run the function
 	 * 
-	 * @param args The arguments passed through to the function
+	 * @param gsonPack The arguments passed through to the function
 	 * 
 	 * @return String The packaged Object[] that has been converted to gson
 	 */
-	public String update(String path, String args) {
+	protected String update(String path, String gsonPack) {
 		
-		for (int i = 0; i < paths.length; i++) {
-			if (path.equalsIgnoreCase(paths[i])) {
-				return controller.gamemanager.callFunction(path, args);
+		for(String comparePath : paths) {
+			if(path.equalsIgnoreCase(comparePath)) {
+				return controller.gamemanager.callFunction(gsonPack);
 			}
 		}
-
-		return path + " is not proper.";
+		
+		return gsonPack;
 	}
 	
 	/**
@@ -76,19 +83,19 @@ public class ClientManager implements HttpHandler {
 
 		try {
 			int curData = inputStream.read();
-			String args = "";
+			String gsonPack = "";
 			while (curData != -1) {
-				args += (char) curData;
+				gsonPack += (char) curData;
 				curData = inputStream.read();
 			}
 
 			String path = exchange.getHttpContext().getPath();
-			String response = update(path, args);
+			String response = update(path, gsonPack);
 			
 			// DEGUGGING //
 			
 			System.out.println("Path From Client: " + path);
-			System.out.println("Data From Client: " + args);
+			System.out.println("Data From Client: " + gsonPack);
 			System.out.println("Data To Client: " + response);
 			System.out.println("---------------------------------------");
 			

@@ -13,64 +13,102 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ClientControl {
 		
-	public static final String IP_ADDRESS = "localhost";
-	public static final int PORT = 65534;
+	public static final String IP_ADDRESS = "169.254.165.93";
+	public static final int PORT = 65535;
 	public static final String ADDRESS = "http://" + IP_ADDRESS + ":" + PORT;
 	
-	protected String[] paths;
-	
-	// TESTING //
-	
-	// END //
+	protected ArrayList<String> paths;
+	protected String userSessionID;
 	
 	public ClientControl() {
 		
-		String serverData = connect("/getPaths", GsonConverter.objectArrayToGson(new Object[] {"Paths please!"}));
-
-		if (serverData != "") {
+		Pack clientPack = new Pack("/getSessionID", "");
+		
+		String gsonServerPack = connect(clientPack);
+		Pack serverPack = GsonConverter.gsonToPack(gsonServerPack);
+		
+		this.userSessionID = (String) serverPack.getReturnValueAt(0);
+		
+		clientPack = new Pack("/joinLobby", userSessionID);
+		
+		connect(clientPack);
+		
+		clientPack = new Pack("/getPaths", userSessionID);
+		
+		gsonServerPack = connect(clientPack);
+		serverPack = GsonConverter.gsonToPack(gsonServerPack);
+		
+		if (serverPack != null) {
 			try {
-				Object[] data = GsonConverter.gsonToObjectArray(serverData);
-				Object[] recievedPaths = (Object[]) Packager.getReturnValue(data);
+				ArrayList<Object> returnValue = serverPack.getReturnValue();
 				
-				paths = new String[recievedPaths.length];
-				for(int i = 0; i < paths.length; i++) {
-					paths[i] = (String) recievedPaths[i];
+				this.paths = new ArrayList<String>();
+				for(Object path : returnValue) {
+					this.paths.add((String) path);
 				}
 			} catch(Exception e) {
-				paths = new String[0];
+				paths = new ArrayList<String>();
 				
 				System.out.println("Request from Server for paths FAILED.");
 				e.printStackTrace();
 			}
 		}
 		
-		// DEBUGGING //
-		connect("/help", GsonConverter.objectArrayToGson(Packager.toStandardForm("/help", "/ping")));
+		// DEBUGGING //	
 		
-		connect("/ping", GsonConverter.objectArrayToGson(new Object[] {System.currentTimeMillis()}));
+		clientPack = new Pack("/help", userSessionID);
+		clientPack.setArgAt(0, "/ping");
 		
-		//Testing with our guessing game
-		boolean gn = false;
-		int g = -1;
-		while(!gn) {
-			try {
-				String guess = connect("/guess", GsonConverter.objectArrayToGson(new Object[] {++g}));
+		//connect(clientPack);
+		
+		clientPack = new Pack("/ping", userSessionID);
+		clientPack.setArgAt(0, System.currentTimeMillis());
+		
+		gsonServerPack = connect(clientPack);
+		serverPack = GsonConverter.gsonToPack(gsonServerPack);
+		
+		// Testing with our tictactoe game
+		Scanner input = new Scanner(System.in);
+		int x = 0;
+		int y = 0;
+		
+		do {
+			
+			System.out.println("Your turn: " + serverPack.getReturnValueAt(0));
+			
+			System.out.print("\nPlace at values: ");
+			x = input.nextInt();
+			y = input.nextInt();
+			System.out.println();
+			
+			clientPack = new Pack("/canPlay", userSessionID);
+			
+			gsonServerPack = connect(clientPack);
+			serverPack = GsonConverter.gsonToPack(gsonServerPack);
+			
+			if ((Boolean) serverPack.getReturnValueAt(0)) {
 				
-				Object[] packRecieve = GsonConverter.gsonToObjectArray(guess);
-				gn = (Boolean) Packager.getReturnValue(packRecieve);
-			} catch (Exception e) {
-				e.printStackTrace();
+				clientPack = new Pack("/placeAt", userSessionID);
+				clientPack.setArgAt(0, x);
+				clientPack.setArgAt(1, y);
+				
+				gsonServerPack = connect(clientPack);
+				serverPack = GsonConverter.gsonToPack(gsonServerPack);
 			}
-		}
-		
-		System.out.println("Guessed Number! " + g);
-		//end of testing with the guessing game
-		
+			
+			clientPack = new Pack("/hasWinner", userSessionID);
+			
+			gsonServerPack = connect(clientPack);
+			serverPack = GsonConverter.gsonToPack(gsonServerPack);
+		} while(!(Boolean) serverPack.getReturnValueAt(0));
+		// end of testing with the tictactoe game
 		// END //
 	}
+	
 	/**
 	 * Connects to server after changing object[] to string
 	 * 
@@ -79,20 +117,20 @@ public class ClientControl {
 	 * 
 	 * @return String The data from the server
 	 */
-	public static String connect(String path, Object[] outputData) {
+	public static String connect(Pack clientPack) {
 		
-		return connect(path, GsonConverter.objectArrayToGson(outputData));
+		return connect(clientPack.getPath(), GsonConverter.packToGson(clientPack));
 	}
 	
 	/**
 	 * Connects to server and sends the json string 'outputData'
 	 * 
 	 * @param path The path connecting to
-	 * @param outputData The json formated string to be sent to the server
+	 * @param gsonClientPack The json formated string to be sent to the server
 	 * 
 	 * @return String The data from the server
 	 */
-	public static String connect(String path, String outputData) {		
+	public static String connect(String path, String gsonClientPack) {		
 		
 		System.out.println("Client attempting a connection to : " + ADDRESS + path); // Debugging
 		
@@ -112,7 +150,7 @@ public class ClientControl {
 		    connection.setInstanceFollowRedirects(false);
 
 		    output = new DataOutputStream(connection.getOutputStream());
-		    output.writeBytes(outputData);
+		    output.writeBytes(gsonClientPack);
 		    output.flush();
 		    output.close();
 
@@ -126,18 +164,18 @@ public class ClientControl {
 			    input.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				data = ""; //in the case of an exception, data will not be 1/2 complete (always all or nothing)
+				data = gsonClientPack; //in the case of an exception, return the original pack
 			}
 		    
-		    connection.disconnect();
-		    
-		    System.out.println("Client succesfully connected to   : " + ADDRESS + path); // Debugging
-		    
-		} catch (Exception e) { e.printStackTrace(); }
+			connection.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// DEBUGGING //
 		
-		System.out.println("Data To Server: " + outputData);
+		System.out.println("Client succesfully connected to   : " + ADDRESS + path); // Debugging
+		System.out.println("Data To Server: " + gsonClientPack);
 		System.out.println("Data From Server: " + data);
 		System.out.println("---------------------------------------");
 		
