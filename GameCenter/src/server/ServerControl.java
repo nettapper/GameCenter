@@ -4,7 +4,7 @@
  * The main class that ties the server, database, and game together
  * 
  * @author Calvin Bochulak, Conner Dunn
- * @version 0.1
+ * @version 0.3
  */
 
 package server;

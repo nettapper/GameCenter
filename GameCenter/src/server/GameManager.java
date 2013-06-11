@@ -133,10 +133,11 @@ public class GameManager {
 	}
 	
 	/**
+	 * Returns the descriptions of the path recieved
+	 *
+	 * @param String The path requested
 	 * 
-	 * @param path
-	 * 
-	 * @return
+	 * @return ArrayList The path's method
 	 */
 	protected ArrayList<Object> help(String path) {
 		System.out.println(path);
@@ -153,10 +154,11 @@ public class GameManager {
 	}
 	
 	/**
+	 * Subtracts the server's current time from the received time
+	 *
+	 * @param Double The time from the client
 	 * 
-	 * @param receiveTime
-	 * 
-	 * @return
+	 * @return ArrayList The subtracted time
 	 */
 	protected ArrayList<Object> ping(Double receiveTime) {
 		ArrayList<Object> returnValue = new ArrayList<Object>();
@@ -167,7 +169,6 @@ public class GameManager {
 	}
 	
 	/**
-	 * Currently does nothing
 	 * Will generate an ID that is unique to the connected clients
 	 * 
 	 * @return String Unique client ID

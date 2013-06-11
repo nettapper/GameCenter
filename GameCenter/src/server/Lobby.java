@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import client.Pack;
 import client.Packager;
 
-/*
- * Handles players in or out of games
- * It contains the up to the max number of players in a current game
- * 
- */
 public class Lobby {
 	
 	private Game game;
@@ -26,7 +21,13 @@ public class Lobby {
 		this.availableGameIDs = game.getGameIDs();
 		this.players = new ArrayList<Player>();
 	}
-	
+	/**
+	*Runs the function after adding the the clients GameID
+	*
+	*@param Pack The pack that the client has sent to the server
+	*
+	*@return Object The return value
+	*/
 	protected Object callFunction(Pack pack) {
 		
 		String userSessionID = pack.getUserSessionID();
@@ -43,7 +44,13 @@ public class Lobby {
 		return game.runFunction(pack);
 	}
 	
-	
+	/**
+	*Adds the player to the Lobby
+	*
+	*@param String The user's session ID from the pack object
+	*
+	*@return boolean Returns if it was successful or not
+	*/
 	protected boolean addPlayer(String userSessionID) {
 		
 		// Check if the game has not exceeded max amount of players

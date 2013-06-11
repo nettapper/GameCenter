@@ -20,6 +20,9 @@ public class Function {
 		plugin.addFunction(this);
 	}
 	
+	/**
+	*Runs the function
+	*/
 	public Object run(Pack pack) {
 		
 		return null;
