@@ -4,7 +4,7 @@
  * An example client class that works with the GameCenter Server
  * 
  * @author Calvin Bochulak, Conner Dunn
- * @version 0.1
+ * @version 0.3
  */
 package client;
 
@@ -110,7 +110,7 @@ public class ClientControl {
 	}
 	
 	/**
-	 * Connects to server after changing object[] to string
+	 * Connects to server with the given Pack's path
 	 * 
 	 * @param path The path connecting to
 	 * @param outputData The 'packaged' output data to the server

@@ -3,7 +3,6 @@ package game;
 import java.util.ArrayList;
 
 import client.Pack;
-import client.Packager;
 
 public abstract class Plugin {
 	

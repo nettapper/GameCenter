@@ -5,7 +5,6 @@ import game.Game;
 import java.util.ArrayList;
 
 import client.Pack;
-import client.Packager;
 
 public class Lobby {
 	
