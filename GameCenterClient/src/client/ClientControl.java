@@ -4,7 +4,6 @@
  * An example client class that works with the GameCenter Server
  * 
  * @author Calvin Bochulak, Conner Dunn
- * @version 0.3
  */
 package client;
 
