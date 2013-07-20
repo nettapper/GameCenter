@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import client.GsonConverter;
 import client.Pack;
-import client.Packager;
 
 public class GameManager {
 	

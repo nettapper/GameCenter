@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class ClientControl {
 		
-	public static final String IP_ADDRESS = "169.254.165.93";
+	public static final String IP_ADDRESS = "localhost";
 	public static final int PORT = 65535;
 	public static final String ADDRESS = "http://" + IP_ADDRESS + ":" + PORT;
 	
